@@ -13,7 +13,7 @@ on:
       - labeled
 
 env:
-  REGISTRY_IMAGE: ${{ secrets.DOCKER_USERNAME }}/AQUÍ_VA_EL_NOMBRE_DE_TU_IMAGEN
+  REGISTRY_IMAGE: ${{ secrets.DOCKER_USERNAME }}/${{ github.repository }}
   PR_ID: ${{ github.event.pull_request.number }}
   TAG: ${{ github.ref_name }}
 
@@ -21,6 +21,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     if: (github.event.pull_request && github.event.label.name == '🐳 Dockerize')  || github.event_name == 'push'
+
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
 
     steps:
       - name: Checkout ⬇️
@@ -40,6 +46,13 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Login to GitHub Container Registry 🔑
+        uses: docker/login-action@v3.3.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v6.9.0
         with:
@@ -53,3 +66,17 @@ jobs:
             ${{ startsWith(github.ref, 'refs/tags/') && format('{0}:{1}', env.REGISTRY_IMAGE, env.TAG) || '' }}
             ${{ github.ref == 'refs/heads/main' && format('{0}:latest', env.REGISTRY_IMAGE) || '' }}
             ${{ github.event_name == 'pull_request' && format('{0}:PR.{1}', env.REGISTRY_IMAGE, env.PR_ID) || '' }}
+
+      - name: Build and Push Ghcr Image
+        uses: docker/build-push-action@v6.9.0
+        with:
+          context: .
+          file: Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          tags: |
+            ${{ startsWith(github.ref, 'refs/tags/') && format('ghcr.io/{0}:{1}', env.REGISTRY_IMAGE, env.TAG) || '' }}
+            ${{ github.ref == 'refs/heads/main' && format('ghcr.io/{0}:latest', env.REGISTRY_IMAGE) || '' }}
+            ${{ github.event_name == 'pull_request' && format('ghcr.io/{0}:PR.{1}', env.REGISTRY_IMAGE, env.PR_ID) || '' }}
