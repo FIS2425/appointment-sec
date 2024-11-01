@@ -13,7 +13,8 @@ on:
       - labeled
 
 env:
-  REGISTRY_IMAGE: ${{ secrets.DOCKER_USERNAME }}/${{ github.repository }}
+  REGISTRY_IMAGE: ${{ secrets.DOCKER_USERNAME }}/appointment
+  GHCR_IMAGE: fis2425/appointment
   PR_ID: ${{ github.event.pull_request.number }}
   TAG: ${{ github.ref_name }}
 
@@ -77,6 +78,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            ${{ startsWith(github.ref, 'refs/tags/') && format('ghcr.io/{0}:{1}', env.REGISTRY_IMAGE, env.TAG) || '' }}
-            ${{ github.ref == 'refs/heads/main' && format('ghcr.io/{0}:latest', env.REGISTRY_IMAGE) || '' }}
-            ${{ github.event_name == 'pull_request' && format('ghcr.io/{0}:PR.{1}', env.REGISTRY_IMAGE, env.PR_ID) || '' }}
+            ${{ startsWith(github.ref, 'refs/tags/') && format('ghcr.io/{0}:{1}', env.GHCR_IMAGE, env.TAG) || '' }}
+            ${{ github.ref == 'refs/heads/main' && format('ghcr.io/{0}:latest', env.GHCR_IMAGE) || '' }}
+            ${{ github.event_name == 'pull_request' && format('ghcr.io/{0}:PR.{1}', env.GHCR_IMAGE, env.PR_ID) || '' }}
