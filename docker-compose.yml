@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  mongodb:
+    restart: unless-stopped
+    image: mongo:latest
+    container_name: mongodb
+    environment:
+      MONGODB_URL: ${MONGOURL}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGOADMIN}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGOPASS}
+    networks:
+      - backend
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  template:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: template
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGOADMIN}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGOPASS}
+      ME_CONFIG_MONGODB_URL: ${MONGOURL}
+      ME_CONFIG_BASICAUTH: false
+    depends_on:
+      - mongodb
+    networks:
+      - backend
+    ports:
+      - "3001:3001"
+
+volumes:
+  mongo-data:
+
+networks:
+  backend:
+    driver: bridge
