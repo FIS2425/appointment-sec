@@ -1,14 +1,222 @@
 openapi: 3.0.0
 info:
-  title: Microservicio Template
+  title: Appointment Service
   version: 1.0.0
-  description: Template para microservicios
+  description: >
+    Appointment management microservice for medical consultation application. 
+    Handles scheduling, retrieval, updating, and cancellation of patient appointments.
 
 servers:
   - url: http://localhost:3001
 
+tags:
+  - name: Appointments
+    description: Endpoints related to patient appointment management
+
 paths:
-  # Aquí irán tus rutas
+  /appointments:
+    post:
+      tags:
+          - Appointments
+      summary: Create a new appointment
+      description: Schedule a new appointment for a patient with specified details.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentCreate'
+      responses:
+        '201':
+          description: Appointment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        '500':
+          description: Error creating the appointment
+
+  /appointments/{id}:
+    get:
+      tags:
+        - Appointments
+      summary: Get appointment by ID
+      description: Retrieve details of a specific appointment by its ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The ID of the appointment to retrieve
+      responses:
+        '200':
+          description: Appointment details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        '404':
+          description: Appointment not found
+        '500':
+          description: Error retrieving the appointment
+
+    put:
+      tags:
+        - Appointments
+      summary: Update an appointment
+      description: Modify details of an existing appointment by ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The ID of the appointment to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentUpdate'
+      responses:
+        '200':
+          description: Appointment updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        '404':
+          description: Appointment not found
+        '500':
+          description: Error updating the appointment
+
+    delete:
+      tags:
+        - Appointments
+      summary: Delete an appointment
+      description: Remove an appointment from the system by its ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The ID of the appointment to delete
+      responses:
+        '200':
+          description: Appointment deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Appointment deleted successfully
+        '404':
+          description: Appointment not found
+        '500':
+          description: Error deleting the appointment
+
+  /appointments/patient/{patientId}:
+    get:
+      tags:
+        - Appointments
+      summary: Get all appointments for a patient
+      description: Retrieve a list of all appointments for a specific patient by their ID.
+      parameters:
+        - in: path
+          name: patientId
+          required: true
+          schema:
+            type: string
+          description: The ID of the patient whose appointments to retrieve
+      responses:
+        '200':
+          description: List of appointments for the patient
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Appointment'
+        '500':
+          description: Error retrieving appointments for the patient
 
 components:
-  # Aquí irán tus componentes reutilizables
+  schemas:
+    Appointment:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the appointment
+        patientId:
+          type: string
+          description: ID of the patient associated with the appointment
+        clinicId:
+          type: string
+          description: ID of the clinic where the appointment is scheduled
+        doctorId:
+          type: string
+          description: ID of the doctor handling the appointment
+        specialty:
+          type: string
+          description: Medical specialty for the appointment
+          enum: ["familiar", "enfermería", "fisioterapia", "ginecología", "otra"]
+        appointmentDate:
+          type: string
+          format: date-time
+          description: Date and time of the appointment
+        status:
+          type: string
+          description: Current status of the appointment
+          enum: ["pendiente", "completada", "cancelada", "no-asistió"]
+        createdAt:
+          type: string
+          format: date-time
+          description: Appointment creation timestamp
+
+    AppointmentCreate:
+      type: object
+      required:
+        - patientId
+        - clinicId
+        - doctorId
+        - specialty
+        - appointmentDate
+      properties:
+        patientId:
+          type: string
+          description: ID of the patient for whom the appointment is created
+        clinicId:
+          type: string
+          description: ID of the clinic where the appointment will be held
+        doctorId:
+          type: string
+          description: ID of the doctor for the appointment
+        specialty:
+          type: string
+          description: Medical specialty for the appointment
+          enum: ["familiar", "enfermería", "fisioterapia", "ginecología", "otra"]
+        appointmentDate:
+          type: string
+          format: date-time
+          description: Date and time of the appointment
+
+    AppointmentUpdate:
+      type: object
+      properties:
+        specialty:
+          type: string
+          description: Updated medical specialty for the appointment
+          enum: ["familiar", "enfermería", "fisioterapia", "ginecología", "otra"]
+        appointmentDate:
+          type: string
+          format: date-time
+          description: Updated date and time of the appointment
+        status:
+          type: string
+          description: Updated status of the appointment
+          enum: ["pendiente", "completada", "cancelada", "no-asistió"]
