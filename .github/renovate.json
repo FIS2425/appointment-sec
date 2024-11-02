@@ -33,7 +33,7 @@
   },
   "ignoreDeps": ["npm", "node"],
   "enabledManagers": ["npm", "github-actions"],
-  "labels": ["dependencies"],
+  "labels": ["📦 Dependencies"],
   "rebaseWhen": "behind-base-branch",
   "rangeStrategy": "pin",
   "lockFileMaintenance": {

@@ -11,10 +11,12 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node --env-file=.env ./src/index.js",
+    "start": "node --env-file=.env ./src/config/index.js",
     "lint": "eslint . --max-warnings=0 --cache --cache-location node_modules/.cache/eslint",
     "lint-fix": "eslint . --fix --max-warnings=0 --cache --cache-location node_modules/.cache/eslint",
-    "dev": "node --watch --env-file=.env ./src/index.js"
+    "dev": "node --watch --env-file=.env ./src/config/index.js",
+    "test": "vitest",
+    "test:watch": "vitest --watch"
   },
   "repository": {
     "type": "git",
@@ -37,7 +39,10 @@
     "@stylistic/eslint-plugin-js": "2.10.0",
     "eslint": "9.13.0",
     "globals": "15.11.0",
-    "husky": "9.1.6"
+    "husky": "9.1.6",
+    "mongodb-memory-server": "10.1.2",
+    "supertest": "7.0.0",
+    "vitest": "2.1.4"
   },
   "dependencies": {
     "cors": "2.8.5",

@@ -22,7 +22,7 @@ services:
       dockerfile: Dockerfile
     container_name: appointment-svc
     environment:
-      - MONGODB_URL=mongodb://${MONGOADMIN}:${MONGOPASS}@mongodb:27017/appointments?authSource=admin
+      - MONGODB_URL=${MONGOURL}
     depends_on:
       - mongodb
     networks:
