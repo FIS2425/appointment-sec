@@ -46,6 +46,14 @@ For automatic linting fixes, use:
 npm run lint-fix
 ```
 
+### 6. Testing 🧪
+
+To run tests, use the following command:
+
+```bash
+npm test
+```
+
 ## Docker Setup 🐳
 
 To run the application in a Docker container:
