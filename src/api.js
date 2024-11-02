@@ -1,9 +1,10 @@
-import express from 'express';
-import cors from 'cors';
-import swaggerUI from 'swagger-ui-express';
-import YAML from 'yamljs';
+import express from "express";
+import cors from "cors";
+import swaggerUI from "swagger-ui-express";
+import appointment from "./routes/appointmentRoutes.js";
+import YAML from "yamljs";
 
-const swaggerDocument = YAML.load('./openapi.yaml');
+const swaggerDocument = YAML.load("./openapi.yaml");
 
 export default function () {
   const app = express();
@@ -12,11 +13,13 @@ export default function () {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
-  app.get('/', (req, res) => {
-    res.send('API funcionando correctamente');
+  app.use("/appointments", appointment);
+
+  app.get("/", (req, res) => {
+    res.send("API funcionando correctamente");
   });
 
-  app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+  app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
   return app;
 }
