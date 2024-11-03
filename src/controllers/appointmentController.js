@@ -59,6 +59,35 @@ export const getAppointmentsByPatient = async (req, res) => {
     });
   }
 };
+
+export const getAppointmentsByDoctor = async (req, res) => {
+  try {
+    const appointments = await Appointment.find({
+      doctorId: req.params.doctorId,
+    });
+    res.status(200).json(appointments);
+  } catch (error) {
+    res.status(500).json({
+      error: 'Error obtaining doctor appointments',
+      message: error.message,
+    });
+  }
+}
+
+export const getAppointmentsByClinic = async (req, res) => {
+  try {
+    const appointments = await Appointment.find({
+      clinicId: req.params.clinicId,
+    });
+    res.status(200).json(appointments);
+  } catch (error) {
+    res.status(500).json({
+      error: 'Error obtaining clinic appointments',
+      message: error.message,
+    });
+  }
+}
+
 export const updateAppointment = async (req, res) => {
   try {
     const updatedData = req.body;

@@ -159,6 +159,56 @@ paths:
                   $ref: '#/components/schemas/Appointment'
         '500':
           description: Error retrieving appointments for the patient
+  
+  /appointments/doctor/{doctorId}:
+    get:
+      tags:
+        - Appointments
+      summary: Get all appointments for a doctor
+      description: Retrieve a list of all appointments for a specific doctor by their ID.
+      parameters:
+        - in: path
+          name: doctorId
+          required: true
+          schema:
+            type: string
+          description: The ID of the doctor whose appointments to retrieve
+      responses:
+        '200':
+          description: List of appointments for the doctor
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Appointment'
+        '500':
+          description: Error retrieving appointments for the doctor
+  
+  /appointments/clinic/{clinicId}:
+    get:
+      tags:
+        - Appointments
+      summary: Get all appointments for a clinic
+      description: Retrieve a list of all appointments for a specific clinic by its ID.
+      parameters:
+        - in: path
+          name: clinicId
+          required: true
+          schema:
+            type: string
+          description: The ID of the clinic whose appointments to retrieve
+      responses:
+        '200':
+          description: List of appointments for the clinic
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Appointment'
+        '500':
+          description: Error retrieving appointments for the clinic
 
 components:
   schemas:

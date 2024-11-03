@@ -4,6 +4,8 @@ import {
   createAppointment,
   getAppointmentById,
   getAppointmentsByPatient,
+  getAppointmentsByClinic,
+  getAppointmentsByDoctor,
   updateAppointment,
   deleteAppointment,
 } from '../controllers/appointmentController.js';
@@ -16,6 +18,14 @@ router.get('/:id', getAppointmentById);
 router.get(
   '/patient/:patientId',
   getAppointmentsByPatient
+);
+router.get(
+  '/doctor/:doctorId',
+  getAppointmentsByDoctor
+);
+router.get(
+  '/clinic/:clinicId',
+  getAppointmentsByClinic
 );
 router.put('/:id', updateAppointment);
 router.delete('/:id', deleteAppointment);
