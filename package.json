@@ -48,7 +48,7 @@
   "dependencies": {
     "cors": "2.8.5",
     "express": "4.21.1",
-    "mongoose": "8.7.3",
+    "mongoose": "8.8.0",
     "swagger-ui-express": "5.0.1",
     "uuid": "11.0.2",
     "yamljs": "0.3.0"
