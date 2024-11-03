@@ -14,7 +14,7 @@ export default function () {
   app.use(express.urlencoded({ extended: true }));
 
   app.get('/', (req, res) => {
-    res.send('API funcionando correctamente');
+    res.send('API is running correctly');
   });
 
   app.use('/appointments', appointment);

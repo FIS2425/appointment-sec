@@ -7,7 +7,7 @@ const AppointmentSchema = new mongoose.Schema({
     default: () => uuidv4(),
     validate: {
       validator: uuidValidate,
-      message: props => `${props.value} no es un UUID válido!`
+      message: props => `${props.value} not a valid UUID!`
     }
   },
   patientId: {
@@ -15,7 +15,7 @@ const AppointmentSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: uuidValidate,
-      message: props => `${props.value} no es un UUID válido!`
+      message: props => `${props.value} not a valid UUID!`
     }
   },
   clinicId: {
@@ -23,7 +23,7 @@ const AppointmentSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: uuidValidate,
-      message: props => `${props.value} no es un UUID válido!`
+      message: props => `${props.value} not a valid UUID!`
     }
   },
   doctorId: {
@@ -31,13 +31,13 @@ const AppointmentSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: uuidValidate,
-      message: props => `${props.value} no es un UUID válido!`
+      message: props => `${props.value} not a valid UUID!`
     }
   },
   specialty: {
     type: String,
     required: true,
-    enum: ['familiar', 'enfermería', 'fisioterapia', 'ginecología', 'otra'],
+    enum: ['family_medicine', 'nursing', 'physiotherapy', 'gynecology', 'pediatrics', 'dermatology', 'cardiology', 'neurology', 'orthopedics', 'psychiatry', 'endocrinology', 'oncology', 'radiology', 'surgery', 'ophthalmology', 'urology', 'anesthesiology', 'otolaryngology', 'gastroenterology', 'other'],
   },
   appointmentDate: {
     type: Date,
@@ -45,8 +45,8 @@ const AppointmentSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['pendiente', 'completada', 'cancelada', 'no-asistió'],
-    default: 'pendiente',
+    enum: ['pending', 'completed', 'canceled', 'no_show'],
+    default: 'pending',
   },
   createdAt: {
     type: Date,

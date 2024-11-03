@@ -16,22 +16,33 @@ export const createAppointment = async (req, res) => {
     return res.status(201).json(newAppointment);
   } catch (error) {
     return res.status(500).json({
-      error: 'Error al crear la cita',
+      error: 'Error creating appointment',
       message: error.message,
     });
   }
 };
 
+export const getAppointments = async (req, res) => {
+  try {
+    const appointments = await Appointment.find();
+    res.status(200).json(appointments);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: 'Error obtaining appointments', message: error.message });
+  }
+}
+
 export const getAppointmentById = async (req, res) => {
   try {
     const appointment = await Appointment.findById(req.params.id);
     if (!appointment)
-      return res.status(404).json({ error: 'Cita no encontrada' });
+      return res.status(404).json({ error: 'Appointment not found' });
     res.status(200).json(appointment);
   } catch (error) {
     res
       .status(500)
-      .json({ error: 'Error al obtener la cita', message: error.message });
+      .json({ error: 'Error obtaining appointment', message: error.message });
   }
 };
 
@@ -43,7 +54,7 @@ export const getAppointmentsByPatient = async (req, res) => {
     res.status(200).json(appointments);
   } catch (error) {
     res.status(500).json({
-      error: 'Error al obtener las citas del paciente',
+      error: 'Error obtaining patient appointments',
       message: error.message,
     });
   }
@@ -57,12 +68,12 @@ export const updateAppointment = async (req, res) => {
       { new: true }
     );
     if (!updatedAppointment)
-      return res.status(404).json({ error: 'Cita no encontrada' });
+      return res.status(404).json({ error: 'Appointment not found' });
     res.status(200).json(updatedAppointment);
   } catch (error) {
     res
       .status(500)
-      .json({ error: 'Error al actualizar la cita', message: error.message });
+      .json({ error: 'Error updating appointment', message: error.message });
   }
 };
 
@@ -72,11 +83,11 @@ export const deleteAppointment = async (req, res) => {
       req.params.id
     );
     if (!deletedAppointment)
-      return res.status(404).json({ error: 'Cita no encontrada' });
-    res.status(200).json({ message: 'Cita eliminada correctamente' });
+      return res.status(404).json({ error: 'Appointment not found' });
+    res.status(200).json({ message: 'Appointment correctly deleted' });
   } catch (error) {
     res
       .status(500)
-      .json({ error: 'Error al eliminar la cita', message: error.message });
+      .json({ error: 'Error deleting appointment', message: error.message });
   }
 };
