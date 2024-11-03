@@ -16,7 +16,8 @@
     "lint-fix": "eslint . --fix --max-warnings=0 --cache --cache-location node_modules/.cache/eslint",
     "dev": "node --watch --env-file=.env ./src/config/index.js",
     "test": "vitest",
-    "test:watch": "vitest --watch"
+    "test:watch": "vitest --watch",
+    "populate": "node ./populators/runPopulator.js"
   },
   "repository": {
     "type": "git",

@@ -15,6 +15,22 @@ tags:
 
 paths:
   /appointments:
+    get:
+      tags:
+        - Appointments
+      summary: Get all appointments
+      description: Retrieve a list of all appointments in the system.
+      responses:
+        '200':
+          description: List of appointments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Appointment'
+        '500':
+          description: Error retrieving appointments
     post:
       tags:
           - Appointments
@@ -164,7 +180,7 @@ components:
         specialty:
           type: string
           description: Medical specialty for the appointment
-          enum: ["familiar", "enfermería", "fisioterapia", "ginecología", "otra"]
+          enum: ['family_medicine', 'nursing', 'physiotherapy', 'gynecology', 'pediatrics', 'dermatology', 'cardiology', 'neurology', 'orthopedics', 'psychiatry', 'endocrinology', 'oncology', 'radiology', 'surgery', 'ophthalmology', 'urology', 'anesthesiology', 'otolaryngology', 'gastroenterology', 'other']
         appointmentDate:
           type: string
           format: date-time
@@ -172,7 +188,7 @@ components:
         status:
           type: string
           description: Current status of the appointment
-          enum: ["pendiente", "completada", "cancelada", "no-asistió"]
+          enum: ["pending", "completed", "cancelled", "no-show"]
         createdAt:
           type: string
           format: date-time
@@ -199,7 +215,7 @@ components:
         specialty:
           type: string
           description: Medical specialty for the appointment
-          enum: ["familiar", "enfermería", "fisioterapia", "ginecología", "otra"]
+          enum: ['family_medicine', 'nursing', 'physiotherapy', 'gynecology', 'pediatrics', 'dermatology', 'cardiology', 'neurology', 'orthopedics', 'psychiatry', 'endocrinology', 'oncology', 'radiology', 'surgery', 'ophthalmology', 'urology', 'anesthesiology', 'otolaryngology', 'gastroenterology', 'other']
         appointmentDate:
           type: string
           format: date-time
@@ -211,7 +227,7 @@ components:
         specialty:
           type: string
           description: Updated medical specialty for the appointment
-          enum: ["familiar", "enfermería", "fisioterapia", "ginecología", "otra"]
+          enum: ['family_medicine', 'nursing', 'physiotherapy', 'gynecology', 'pediatrics', 'dermatology', 'cardiology', 'neurology', 'orthopedics', 'psychiatry', 'endocrinology', 'oncology', 'radiology', 'surgery', 'ophthalmology', 'urology', 'anesthesiology', 'otolaryngology', 'gastroenterology', 'other']
         appointmentDate:
           type: string
           format: date-time
@@ -219,4 +235,4 @@ components:
         status:
           type: string
           description: Updated status of the appointment
-          enum: ["pendiente", "completada", "cancelada", "no-asistió"]
+          enum: ["pending", "completed", "cancelled", "no-show"]
