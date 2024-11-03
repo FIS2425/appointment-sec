@@ -46,6 +46,7 @@
     "vitest": "2.1.4"
   },
   "dependencies": {
+    "cookie-parser": "1.4.7",
     "cors": "2.8.5",
     "express": "4.21.1",
     "mongoose": "8.8.0",
