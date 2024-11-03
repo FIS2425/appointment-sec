@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import swaggerUI from 'swagger-ui-express';
 import YAML from 'yamljs';
+import appointment from './routes/appointmentRoutes.js';
 
 const swaggerDocument = YAML.load('./openapi.yaml');
 
@@ -13,8 +14,10 @@ export default function () {
   app.use(express.urlencoded({ extended: true }));
 
   app.get('/', (req, res) => {
-    res.send('API funcionando correctamente');
+    res.send('API is running correctly');
   });
+
+  app.use('/appointments', appointment);
 
   app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
