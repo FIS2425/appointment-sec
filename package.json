@@ -52,6 +52,7 @@
     "mongoose": "8.8.0",
     "swagger-ui-express": "5.0.1",
     "uuid": "11.0.2",
+    "winston": "3.16.0",
     "yamljs": "0.3.0"
   }
 }
