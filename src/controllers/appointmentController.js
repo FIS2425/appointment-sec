@@ -1,4 +1,5 @@
 import Appointment from '../schemas/Appointment.js';
+// import logger from '../config/logger.js';
 
 export const createAppointment = async (req, res) => {
   const { patientId, clinicId, doctorId, specialty, appointmentDate } = req.body;

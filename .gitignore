@@ -16,3 +16,6 @@ seeders
 
 # Mac files
 .DS_Store
+
+# Logs
+logs
