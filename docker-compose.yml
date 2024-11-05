@@ -15,12 +15,12 @@ services:
     volumes:
       - mongo-data:/data/db
 
-  appointment-svc:
+  appointment:
     restart: unless-stopped
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: appointment-svc
+    container_name: appointment
     environment:
       - MONGODB_URL=${MONGOURL}
     depends_on:
@@ -28,7 +28,7 @@ services:
     networks:
       - backend
     ports:
-      - "3001:3001"
+      - "3012:3012"
     volumes:
       - .:/appointment-svc
 

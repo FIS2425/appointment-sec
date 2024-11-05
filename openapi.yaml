@@ -7,7 +7,8 @@ info:
     Handles scheduling, retrieval, updating, and cancellation of patient appointments.
 
 servers:
-  - url: http://localhost:3001
+  - url: http://localhost:3012
+    description: Local development server
 
 tags:
   - name: Appointments
