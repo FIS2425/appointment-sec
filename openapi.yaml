@@ -8,6 +8,7 @@ info:
 
 servers:
   - url: http://localhost:3012
+    description: Local development server
 
 tags:
   - name: Appointments
