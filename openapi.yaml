@@ -7,7 +7,7 @@ info:
     Handles scheduling, retrieval, updating, and cancellation of patient appointments.
 
 servers:
-  - url: http://localhost:3001
+  - url: http://localhost:3012
 
 tags:
   - name: Appointments
@@ -134,6 +134,87 @@ paths:
           description: Appointment not found
         '500':
           description: Error deleting the appointment
+
+  /appointments/{id}/cancel:
+    put:
+      tags:
+        - Appointments
+      summary: Cancel an appointment
+      description: Change the status of an appointment to "cancelled" by its ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The ID of the appointment to cancel
+      responses:
+        '200':
+          description: Appointment cancelled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        '400':
+          description: Appointment ID not provided
+        '404':
+          description: Appointment not found
+        '500':
+          description: Error cancelling the appointment
+
+  /appointments/{id}/complete:
+    put:
+      tags:
+        - Appointments
+      summary: Complete an appointment
+      description: Change the status of an appointment to "completed" by its ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The ID of the appointment to complete
+      responses:
+        '200':
+          description: Appointment completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        '400':
+          description: Appointment ID not provided
+        '404':
+          description: Appointment not found
+        '500':
+          description: Error completing the appointment
+
+  /appointments/{id}/noshow:
+    put:
+      tags:
+        - Appointments
+      summary: Mark an appointment as no-show
+      description: Change the status of an appointment to "no-show" by its ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The ID of the appointment to mark as no-show
+      responses:
+        '200':
+          description: Appointment marked as no-show successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        '400':
+          description: Appointment ID not provided
+        '404':
+          description: Appointment not found
+        '500':
+          description: Error marking appointment as no-show
 
   /appointments/patient/{patientId}:
     get:
