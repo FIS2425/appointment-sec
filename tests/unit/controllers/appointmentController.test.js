@@ -131,12 +131,11 @@ describe('APPOINTMENT ENDPOINTS TEST', () => {
   });
   describe('test negative no body PUT /appointments/:id', () => {
     it('should return 400', async () => {
-      const response = await request.put(`/appointments/${sampleAppointments[0]._id}`);
-
+      console.log('_id:', sampleAppointments[2]._id);
+      const response = await request.put(`/appointments/${sampleAppointments[2]._id}`);
       expect(response.status).toBe(400);
-      const appointment = await Appointment.findById(sampleAppointments[0]._id);
-      console.log(appointment)
-      expect(appointment.specialty).toBe(sampleAppointments[0].specialty);
+      const appointment = await Appointment.findById(sampleAppointments[2]._id);
+      expect(appointment.specialty).toBe(sampleAppointments[2].specialty);
     });
   });
   describe('test DELETE /appointments/:id', () => {
