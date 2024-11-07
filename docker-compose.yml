@@ -23,6 +23,7 @@ services:
     container_name: appointment
     environment:
       - MONGODB_URL=${MONGOURL}
+      - PORT=3012
     depends_on:
       - mongodb
     networks:
