@@ -52,6 +52,23 @@ const sampleAppointments = [
   },
 ];
 
+
+let today = new Date();
+today.setHours(today.getHours() + 1);
+
+let yesterday = new Date();
+yesterday.setDate(yesterday.getDate() - 1);
+
+let tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+
+let tomorrowPlus15min = new Date();
+tomorrowPlus15min.setDate(tomorrowPlus15min.getDate() + 1);
+tomorrowPlus15min.setMinutes(tomorrowPlus15min.getMinutes() + 15);
+
+let monthFromNow = new Date();
+monthFromNow.setDate(monthFromNow.getDate() + 31);
+
 beforeAll(async () => {
   await db.clearDatabase();
   await Appointment.insertMany(sampleAppointments);
@@ -86,12 +103,13 @@ describe('APPOINTMENT ENDPOINTS TEST', () => {
   describe('test POST /appointments', () => {
     it('should return 201 and should add a appointment', async () => {
       const previousAppointments = await Appointment.find();
+
       const newAppointment = {
         patientId: uuidv4(),
         clinicId: uuidv4(),
         doctorId: uuidv4(),
         specialty: 'family_medicine',
-        appointmentDate: new Date('2024-05-15T10:30:00Z'),
+        appointmentDate: today,
         status: 'pending',
       };
       const response = await request.post('/appointments').send(newAppointment);
@@ -131,7 +149,6 @@ describe('APPOINTMENT ENDPOINTS TEST', () => {
   });
   describe('test negative no body PUT /appointments/:id', () => {
     it('should return 400', async () => {
-      console.log('_id:', sampleAppointments[2]._id);
       const response = await request.put(`/appointments/${sampleAppointments[2]._id}`);
       expect(response.status).toBe(400);
       const appointment = await Appointment.findById(sampleAppointments[2]._id);
@@ -182,13 +199,14 @@ describe('APPOINTMENT BUSSINES LOGIC VALIDATION TEST', () => {
   describe('should prevent overlapping appointments for the same patient', () => {
     it('should return 400 for overlapping appointments for the same patient', async () => {
       const patientId = uuidv4();
+
       const firstAppointment = new Appointment({
         _id: uuidv4(),
         patientId,
         clinicId: uuidv4(),
         doctorId: uuidv4(),
         specialty: 'family_medicine',
-        appointmentDate: new Date('2024-05-15T10:30:00Z'),
+        appointmentDate: tomorrow,
         status: 'pending',
       });
       await firstAppointment.save();
@@ -197,13 +215,14 @@ describe('APPOINTMENT BUSSINES LOGIC VALIDATION TEST', () => {
         patientId,
         clinicId: uuidv4(),
         doctorId: uuidv4(),
-        specialty: 'family_medicine',
-        appointmentDate: new Date('2024-05-15T10:45:00Z'), // Overlapping time
+        specialty: 'other',
+        appointmentDate: tomorrowPlus15min,
         status: 'pending',
       };
+
       const response = await request.post('/appointments').send(overlappingAppointment);
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('Overlapping appointments are not allowed');
+      expect(response.body.error).toBe('Patient already has an appointment at that time');
     });
   });
   describe('should prevent overlapping appointments for the same doctor', () => {
@@ -215,7 +234,7 @@ describe('APPOINTMENT BUSSINES LOGIC VALIDATION TEST', () => {
         clinicId: uuidv4(),
         doctorId,
         specialty: 'family_medicine',
-        appointmentDate: new Date('2024-05-15T10:30:00Z'),
+        appointmentDate: tomorrow,
         status: 'pending',
       });
       await firstAppointment.save();
@@ -225,12 +244,12 @@ describe('APPOINTMENT BUSSINES LOGIC VALIDATION TEST', () => {
         clinicId: uuidv4(),
         doctorId,
         specialty: 'family_medicine',
-        appointmentDate: new Date('2024-05-15T10:45:00Z'), // Overlapping time
+        appointmentDate: tomorrowPlus15min, // Overlapping time
         status: 'pending',
       };
       const response = await request.post('/appointments').send(overlappingAppointment);
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('Overlapping appointments are not allowed');
+      expect(response.body.error).toBe('Doctor already has an appointment at that time');
     });
   });
 });
