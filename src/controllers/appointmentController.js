@@ -1,16 +1,53 @@
 import Appointment from '../schemas/Appointment.js';
-import { validateRequestBody } from '../utils/validation.js';
+import {
+  validateRequestBody,
+  isDateInPast,
+  isDateMoreThan30Days,
+  isAvailable,
+} from '../utils/validation.js';
 import logger from '../config/logger.js';
 
-let appointmentFields = ['patientId', 'clinicId', 'doctorId', 'specialty', 'appointmentDate'];
+let appointmentFields = [
+  'patientId',
+  'clinicId',
+  'doctorId',
+  'specialty',
+  'appointmentDate',
+];
 
 export const createAppointment = async (req, res) => {
   if(!validateRequestBody(req.body, appointmentFields, true)) {
     logger.error('Error creating appointment: Missing required fields');
     return res.status(400).json({ error: 'Missing required fields' });
   }
-  
-  const { patientId, clinicId, doctorId, specialty, appointmentDate } = req.body;
+
+  const { patientId, doctorId, appointmentDate, duration } = req.body;
+
+  const patientAvailable = await isAvailable(patientId, 'patientId', appointmentDate, duration);
+  // todo: check if doctor is in working hours
+  const doctorAvailable = await isAvailable(doctorId, 'doctorId', appointmentDate, duration);
+  if (
+    isDateInPast(appointmentDate) ||
+    isDateMoreThan30Days(appointmentDate) ||
+    !patientAvailable ||
+    !doctorAvailable
+  ) {
+    const error = isDateInPast(appointmentDate)
+      ? 'Appointment date cannot be in the past'
+      : isDateMoreThan30Days(appointmentDate)
+        ? 'Appointment date cannot be more than 30 days in the future'
+        : !patientAvailable
+          ? 'Patient already has an appointment at that time'
+          : 'Doctor already has an appointment at that time';
+
+    logger.error(`Error creating appointment: ${error}`);
+
+    return res.status(400).json({ error });
+  }
+
+  const { clinicId, specialty } =
+    req.body;
+
   try {
     const newAppointment = new Appointment({
       patientId,
@@ -41,7 +78,7 @@ export const getAppointments = async (req, res) => {
       .status(500)
       .json({ error: 'Error obtaining appointments', message: error.message });
   }
-}
+};
 
 export const getAppointmentById = async (req, res) => {
   try {
@@ -95,7 +132,7 @@ export const getAppointmentsByDoctor = async (req, res) => {
       message: error.message,
     });
   }
-}
+};
 
 export const getAppointmentsByClinic = async (req, res) => {
   try {
@@ -114,7 +151,7 @@ export const getAppointmentsByClinic = async (req, res) => {
       message: error.message,
     });
   }
-}
+};
 
 export const updateAppointment = async (req, res) => {
   try {
@@ -128,7 +165,7 @@ export const updateAppointment = async (req, res) => {
     const updatedAppointment = await Appointment.findByIdAndUpdate(
       req.params.id,
       updatedData,
-      { new: true }
+      { new: true },
     );
     if (!updatedAppointment){
       logger.error(`Appointment ${req.params.id} not found`);
@@ -146,7 +183,7 @@ export const updateAppointment = async (req, res) => {
 export const deleteAppointment = async (req, res) => {
   try {
     const deletedAppointment = await Appointment.findByIdAndDelete(
-      req.params.id
+      req.params.id,
     );
     if (!deletedAppointment){
       logger.error(`Appointment ${req.params.id} not found`);

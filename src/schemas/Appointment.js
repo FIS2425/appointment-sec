@@ -43,15 +43,33 @@ const AppointmentSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  duration: {
+    type: Number,
+    required: true,
+    min: 15,
+    max: 60,
+    default: 30,
+  },
+  appointmentEndDate: {
+    type: Date,
+  },
   status: {
     type: String,
     enum: ['pending', 'completed', 'canceled', 'no_show'],
     default: 'pending',
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+});
+
+AppointmentSchema.pre('save', function (next) {
+  this.appointmentEndDate = new Date(this.appointmentDate);
+  this.appointmentEndDate.setMinutes(this.appointmentEndDate.getMinutes() + this.duration);
+  next();
+});
+
+AppointmentSchema.pre('findByIdAndUpdate', function (next) {
+  this._update.appointmentEndDate = new Date(this._update.appointmentDate);
+  this._update.appointmentEndDate.setMinutes(this._update.appointmentEndDate.getMinutes() + this._update.duration);
+  next();
 });
 
 export default mongoose.model('Appointment', AppointmentSchema);
