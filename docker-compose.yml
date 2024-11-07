@@ -33,6 +33,33 @@ services:
     volumes:
       - .:/appointment-svc
 
+  workshift:
+    restart: unless-stopped
+    image: cloudmedix/workshift
+    container_name: workshift
+    environment:
+      - MONGODB_URL=${MONGOURL_WORKSHIFT}
+      - PORT=3011
+    depends_on:
+      - mongodb
+    networks:
+      - backend
+    ports:
+      - "3011:3011"
+    volumes:
+      - .env:/workshift-svc/.env
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBIT_USERNAME}
+      - RABBITMQ_DEFAULT_PASS=${RABBIT_PASSWORD}
+    networks:
+      - backend
+    ports:
+      - "5672:5672"
+
 volumes:
   mongo-data:
 
