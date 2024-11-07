@@ -15,64 +15,187 @@ const connectToDatabase = async () => {
     });
 };
 
-// Sample appointment data
+const today = new Date();
+const yesterday = new Date(today.setDate(today.getDate() - 1));
+const tomorrow = new Date(today.setDate(today.getDate() + 1));
+const inTwoDays = new Date(today.setDate(today.getDate() + 2));
+const inThreeDays = new Date(today.setDate(today.getDate() + 3));
+const inFourDays = new Date(today.setDate(today.getDate() + 4));
+
+const doctor1 = {
+  id: uuidv4(),
+  specialty: 'family_medicine',
+}
+
+const doctor2 = {
+  id: uuidv4(),
+  specialty: 'dermatology',
+}
+
+const doctor3 = {
+  id: uuidv4(),
+  specialty: 'gynecology'
+}
+
+const doctor4 = {
+  id: uuidv4(),
+  specialty: 'pediatrics'
+}
+
+const patient1 = uuidv4();
+
+const patient2 = uuidv4();
+
+const patient3 = uuidv4();
+
+const patient4 = uuidv4();
+
+const clinic1 = uuidv4();
+
+const clinic2 = uuidv4();
+
 const sampleAppointments = [
   {
-    _id: uuidv4(),
-    patientId: uuidv4(),
-    clinicId: uuidv4(),
-    doctorId: uuidv4(),
-    specialty: 'family_medicine',
-    appointmentDate: new Date('2024-01-15T10:30:00Z'),
-    status: 'pending',
-  },
-  {
-    _id: uuidv4(),
-    patientId: uuidv4(),
-    clinicId: uuidv4(),
-    doctorId: uuidv4(),
-    specialty: 'dermatology',
-    appointmentDate: new Date('2024-02-10T14:00:00Z'),
-    status: 'pending',
-  },
-  {
-    _id: uuidv4(),
-    patientId: uuidv4(),
-    clinicId: uuidv4(),
-    doctorId: uuidv4(),
-    specialty: 'pediatrics',
-    appointmentDate: new Date('2024-03-05T09:00:00Z'),
+    patientId: patient1,
+    clinicId: clinic1,
+    doctorId: doctor1.id, // family medicine doctor
+    specialty: doctor1.specialty,
+    type: 'consult',
+    appointmentDate: new Date(yesterday.setHours(10, 15, 0, 0)), // yesterday at 10:15
+    duration: 30,
     status: 'completed',
   },
   {
-    _id: uuidv4(),
-    patientId: uuidv4(),
-    clinicId: uuidv4(),
-    doctorId: uuidv4(),
-    specialty: 'cardiology',
-    appointmentDate: new Date('2024-03-20T11:30:00Z'),
-    status: 'canceled',
+    patientId: patient2,
+    clinicId: clinic2,
+    doctorId: doctor2.id, // dermatology doctor
+    specialty: doctor2.specialty,
+    type: 'consult',
+    appointmentDate: new Date(yesterday.setHours(14, 30, 0, 0)), // yesterday at 14:30
+    duration: 45,
+    status: 'completed',
   },
   {
-    _id: uuidv4(),
-    patientId: uuidv4(),
-    clinicId: uuidv4(),
-    doctorId: uuidv4(),
-    specialty: 'orthopedics',
-    appointmentDate: new Date('2024-04-01T15:00:00Z'),
+    patientId: patient3,
+    clinicId: clinic1,
+    doctorId: doctor3.id, // gynecology doctor
+    specialty: doctor3.specialty,
+    type: 'follow_up',
+    appointmentDate: new Date(today.setHours(8, 45, 0, 0)), // today at 8:45
+    duration: 30,
     status: 'pending',
   },
+  {
+    patientId: patient4,
+    clinicId: clinic1,
+    doctorId: doctor2.id, // dermatology doctor
+    specialty: doctor2.specialty,
+    type: 'consult',
+    appointmentDate: new Date(today.setHours(18, 30, 0, 0)), // today at 18:30
+    duration: 30,
+    status: 'pending',
+  },
+  {
+    patientId: patient1,
+    clinicId: clinic2,
+    doctorId: doctor3.id, // gynecology doctor
+    specialty: doctor3.specialty,
+    type: 'revision',
+    appointmentDate: new Date(tomorrow.setHours(10, 0, 0, 0)), // tomorrow at 10:00
+    duration: 30,
+    status: 'pending',
+  },
+  {
+    patientId: patient2,
+    clinicId: clinic2,
+    doctorId: doctor4.id, // pediatrics doctor
+    specialty: doctor4.specialty,
+    type: 'consult',
+    appointmentDate: new Date(tomorrow.setHours(12, 15, 0, 0)), // tomorrow at 12:15
+    duration: 30,
+    status: 'pending',
+  },
+  {
+    patientId: patient3,
+    clinicId: clinic1,
+    doctorId: doctor1.id, // family medicine doctor
+    specialty: doctor1.specialty,
+    type: 'follow_up',
+    appointmentDate: new Date(inTwoDays.setHours(9, 30, 0, 0)), // in two days at 9:30
+    duration: 30,
+    status: 'pending',
+  },
+  {
+    patientId: patient4,
+    clinicId: clinic1,
+    doctorId: doctor4.id, // pediatrics doctor
+    specialty: doctor4.specialty,
+    type: 'revision',
+    appointmentDate: new Date(inTwoDays.setHours(10, 30, 0, 0)), // in two days at 10:30
+    duration: 30,
+    status: 'pending',
+  },
+  {
+    patientId: patient1,
+    clinicId: clinic2,
+    doctorId: doctor2.id, // dermatology doctor
+    specialty: doctor2.specialty,
+    type: 'consult',
+    appointmentDate: new Date(inThreeDays.setHours(11, 0, 0, 0)), // in three days at 11:00
+    duration: 45,
+    status: 'pending',
+  },
+  {
+    patientId: patient2,
+    clinicId: clinic2,
+    doctorId: doctor3.id, // gynecology doctor
+    specialty: doctor3.specialty,
+    type: 'follow_up',
+    appointmentDate: new Date(inThreeDays.setHours(13, 30, 0, 0)), // in three days at 13:30
+    duration: 30,
+    status: 'pending',
+  },
+  {
+    patientId: patient3,
+    clinicId: clinic1,
+    doctorId: doctor1.id, // family medicine doctor
+    specialty: doctor1.specialty,
+    type: 'revision',
+    appointmentDate: new Date(inThreeDays.setHours(15, 0, 0, 0)), // in three days at 15:00
+    duration: 30,
+    status: 'pending',
+  },
+  {
+    patientId: patient4,
+    clinicId: clinic1,
+    doctorId: doctor2.id, // dermatology doctor
+    specialty: doctor2.specialty,
+    type: 'consult',
+    appointmentDate: new Date(inFourDays.setHours(14, 0, 0, 0)), // in four days at 14:00
+    duration: 30,
+    status: 'pending',
+  },
+  {
+    patientId: patient1,
+    clinicId: clinic2,
+    doctorId: doctor4.id, // pediatrics doctor
+    specialty: doctor4.specialty,
+    type: 'revision',
+    appointmentDate: new Date(inFourDays.setHours(16, 45, 0, 0)), // in four days at 16:45
+    duration: 45,
+    status: 'pending',
+  }
 ];
 
 async function populateAppointments() {
   try {
-    // Delete sample appointments with matching patientId and doctorId
+    // delete any existing appointments that match patientId and doctorId
     await Appointment.deleteMany({
       patientId: { $in: sampleAppointments.map((appt) => appt.patientId) },
       doctorId: { $in: sampleAppointments.map((appt) => appt.doctorId) },
     });
 
-    // Save each appointment
+    // save each sample appointment
     for (const apptData of sampleAppointments) {
       const appointment = new Appointment(apptData);
       await appointment.save();
