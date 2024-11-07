@@ -39,6 +39,12 @@ const AppointmentSchema = new mongoose.Schema({
     required: true,
     enum: ['family_medicine', 'nursing', 'physiotherapy', 'gynecology', 'pediatrics', 'dermatology', 'cardiology', 'neurology', 'orthopedics', 'psychiatry', 'endocrinology', 'oncology', 'radiology', 'surgery', 'ophthalmology', 'urology', 'anesthesiology', 'otolaryngology', 'gastroenterology', 'other'],
   },
+  type: {
+    type: String,
+    required: true,
+    enum: ['consult', 'revision', 'follow_up'],
+    default: 'consult',
+  },
   appointmentDate: {
     type: Date,
     required: true,
