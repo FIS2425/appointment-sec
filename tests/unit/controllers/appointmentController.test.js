@@ -50,6 +50,24 @@ const sampleAppointments = [
     appointmentDate: new Date('2024-04-01T15:00:00Z'),
     status: 'pending',
   },
+  {
+    _id: uuidv4(),
+    patientId: uuidv4(),
+    clinicId: uuidv4(),
+    doctorId: uuidv4(),
+    specialty: 'gynecology',
+    appointmentDate: new Date('2024-04-01T15:00:00Z'),
+    status: 'pending',
+  },
+  {
+    _id: uuidv4(),
+    patientId: uuidv4(),
+    clinicId: uuidv4(),
+    doctorId: uuidv4(),
+    specialty: 'family_medicine',
+    appointmentDate: new Date('2024-04-01T15:00:00Z'),
+    status: 'pending',
+  }
 ];
 
 
@@ -122,6 +140,48 @@ describe('APPOINTMENT ENDPOINTS TEST', () => {
     it('should return 400', async () => {
       const response = await request.post('/appointments');
       expect(response.status).toBe(400);
+    });
+  });
+  describe('test PUT /appointments/:id/cancel', () => {
+    it('should return 200 and should cancel the appointment', async () => {
+      const response = await request.put(`/appointments/${sampleAppointments[4]._id}/cancel`);
+      expect(response.status).toBe(200);
+      const appointment = await Appointment.findById(sampleAppointments[4]._id);
+      expect(appointment.status).toBe('cancelled');
+    });
+  });
+  describe('test negative no id PUT /appointments/:id/cancel', () => {
+    it('should return 404', async () => {
+      const response = await request.put(`/appointments/${uuidv4()}/cancel`);
+      expect(response.status).toBe(404);
+    });
+  });
+  describe('test PUT /appointments/:id/complete', () => {
+    it('should return 200 and should complete the appointment', async () => {
+      const response = await request.put(`/appointments/${sampleAppointments[5]._id}/complete`);
+      expect(response.status).toBe(200);
+      const appointment = await Appointment.findById(sampleAppointments[5]._id);
+      expect(appointment.status).toBe('completed');
+    });
+  });
+  describe('test negative no id PUT /appointments/:id/complete', () => {
+    it('should return 404', async () => {
+      const response = await request.put(`/appointments/${uuidv4()}/complete`);
+      expect(response.status).toBe(404);
+    });
+  });
+  describe('test PUT /appointments/:id/noshow', () => {
+    it('should return 200 and should mark the appointment as noshow', async () => {
+      const response = await request.put(`/appointments/${sampleAppointments[6]._id}/noshow`);
+      expect(response.status).toBe(200);
+      const appointment = await Appointment.findById(sampleAppointments[6]._id);
+      expect(appointment.status).toBe('no_show');
+    });
+  });
+  describe('test negative no id PUT /appointments/:id/noshow', () => {
+    it('should return 404', async () => {
+      const response = await request.put(`/appointments/${uuidv4()}/noshow`);
+      expect(response.status).toBe(404);
     });
   });
   describe('test PUT /appointments/:id', () => {
