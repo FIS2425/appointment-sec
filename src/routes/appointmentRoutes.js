@@ -10,13 +10,17 @@ import {
   deleteAppointment,
   cancelAppointment,
   completeAppointment,
-  noShowAppointment
+  noShowAppointment,
+  getAvailableAppointments,
 } from '../controllers/appointmentController.js';
 
 const router = express.Router();
 
 router.get('/', getAppointments);
 router.post('/', createAppointment);
+
+
+router.get('/available', getAvailableAppointments);
 
 router.put('/:id/cancel', cancelAppointment);
 router.put('/:id/complete', completeAppointment);
@@ -38,6 +42,5 @@ router.get(
   '/clinic/:clinicId',
   getAppointmentsByClinic
 );
-
 
 export default router;
