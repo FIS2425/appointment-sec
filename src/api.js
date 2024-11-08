@@ -10,7 +10,9 @@ import { syncWorkshifts } from './config/workshiftSync.js';
 const swaggerDocument = YAML.load('./openapi.yaml');
 
 export default function () {
-  syncWorkshifts();
+  if (process.env.NODE_ENV !== 'test') {
+    syncWorkshifts();
+  }
   const app = express();
 
   app.use(cors());
