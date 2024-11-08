@@ -5,8 +5,10 @@ import {
   isDateMoreThan30Days,
   isAvailable,
 } from '../utils/validation.js';
-import { getAppointmentsWorkshiftByDoctorAndDate,
-  getFreeTimeIntervals
+import { 
+  getAppointmentsWorkshiftByDoctorAndDate,
+  getFreeTimeIntervals,
+  getAvailableAppointmentsByWorkshift,
 } from '../utils/workshiftQueries.js';
 import logger from '../config/logger.js';
 
@@ -156,51 +158,6 @@ export const getAppointmentsByClinic = async (req, res) => {
   }
 };
 
-
-// export const getAppointmentsBySpecialtyAndClinicId = async (req, res) => {
-//   try {
-//     const { specialty, clinicId } = req.params;
-//     const { period } = req.query;
-    
-//     let appointments;
-    
-//     if (period === 'week') {
-//       const startDate = new Date();
-//       const endDate = new Date(startDate.getTime() + (6 * 24 * 60 * 60 * 1000));
-      
-//       appointments = await Appointment.find({
-//         specialty,
-//         clinicId,
-//         date: { $gte: startDate, $lte: endDate }
-//       });
-//     } else if (period === 'month') {
-//       const startDate = new Date();
-//       const endDate = new Date(startDate.getTime() + (30 * 24 * 60 * 60 * 1000));
-      
-//       appointments = await Appointment.find({
-//         specialty,
-//         clinicId,
-//         date: { $gte: startDate, $lte: endDate }
-//       });
-//     } else {
-//       appointments = await Appointment.find({ specialty, clinicId });
-//     }
-    
-//     if (!appointments.length) {
-//       logger.error(`Appointments not found for specialty ${specialty} and clinic ${clinicId}`);
-//       return res.status(404).json({ error: `Appointments not found for specialty ${specialty} and clinic ${clinicId}` });
-//     }
-    
-//     logger.debug(`Returning ${appointments.length} appointments for specialty ${specialty} and clinic ${clinicId}`);
-//     res.status(200).json(appointments);
-//   } catch (error) {
-//     res.status(500).json({
-//       error: 'Error obtaining clinic appointments',
-//       message: error.message
-//     });
-//   }
-// };
-
 export const updateAppointment = async (req, res) => {
   try {
     const validation = validateRequestBody(req.body, appointmentFields, false);
@@ -326,10 +283,10 @@ export const getAvailableAppointments = async (req, res) => {
     const { clinicId, doctorId, date } = req.query;
 
     const appointments = await getAppointmentsWorkshiftByDoctorAndDate(clinicId, doctorId, date);
-    console.log(appointments[0].workshift);
     const intervals = await getFreeTimeIntervals(appointments);
-    logger.debug(`Returning ${appointments.length} appointments for clinic ${clinicId} and doctor ${doctorId} on ${date}`);
-    res.status(200).json(intervals);
+    const availableAppointments = await getAvailableAppointmentsByWorkshift(intervals, 30); // 30 minutes duration by default
+    logger.debug(`Returning ${availableAppointments.length} available appointments`);
+    res.status(200).json(availableAppointments);
   } catch (error) {
     res.status(500).json({
       error: 'Error obtaining clinic appointments',

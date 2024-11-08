@@ -54,60 +54,71 @@ export const getAppointmentsWorkshiftByDoctorAndDate = async (clinicId, doctorId
 
 export const getFreeTimeIntervals = async (appointments) => {
   const freeTimeIntervals = [];
-  
+
   // Ordenar las citas por fecha de inicio
   appointments.sort((a, b) => new Date(a.appointmentDate) - new Date(b.appointmentDate));
-  
-  // Obtener los turnos de trabajo
-  const workShifts = appointments[0].workshift;  // Asumiendo que todos los turnos de trabajo están en el mismo formato
-  
+
+  // Obtener los turnos de trabajo y ordenarlos por fecha de inicio
+  const workShifts = appointments[0].workshift.sort(
+    (a, b) => new Date(a.startDate) - new Date(b.startDate)
+  );
+
   // Iterar sobre los turnos de trabajo
   for (let i = 0; i < workShifts.length; i++) {
     const workShiftStart = new Date(workShifts[i].startDate);
     const workShiftEnd = new Date(workShiftStart.getTime() + workShifts[i].duration * 60000);
-    
-    // Verificar si hay tiempo libre antes de la primera cita
-    const firstAppointmentStart = new Date(appointments[0].appointmentDate);
-    if (i === 0 && firstAppointmentStart.getTime() > workShiftStart.getTime()) {
-      freeTimeIntervals.push({
-        start: workShiftStart,
-        end: firstAppointmentStart,
-      });
-    }
-    
-    let previousAppointmentEndTime = new Date(appointments[0].appointmentEndDate);
-    
-    // Iterar sobre las citas para calcular intervalos libres
-    for (let j = 1; j < appointments.length; j++) {
-      const appointment = appointments[j];
-  
-      // Verificar si la cita está dentro del turno de trabajo
-      if (appointment.appointmentDate >= workShiftStart && appointment.appointmentDate < workShiftEnd) {
-        let freeStartDate = new Date(previousAppointmentEndTime);
-        let freeEndDate = new Date(appointment.appointmentDate);
-    
-        // Agregar el intervalo libre a la lista si hay suficiente tiempo
-        if (freeEndDate.getTime() - freeStartDate.getTime() >= 60000) {
-          freeTimeIntervals.push({
-            start: freeStartDate,
-            end: freeEndDate,
-          });
-        }
-    
-        // Actualizar el inicio del siguiente intervalo libre
-        previousAppointmentEndTime = new Date(appointment.appointmentEndDate);
+
+    // Filtrar las citas que están dentro del turno de trabajo actual
+    const appointmentsInShift = appointments.filter(
+      (appointment) =>
+        new Date(appointment.appointmentDate) >= workShiftStart &&
+        new Date(appointment.appointmentDate) < workShiftEnd
+    );
+
+    let previousAppointmentEndTime = workShiftStart;
+
+    // Iterar sobre las citas en el turno de trabajo para calcular intervalos libres
+    for (let j = 0; j < appointmentsInShift.length; j++) {
+      const appointmentStart = new Date(appointmentsInShift[j].appointmentDate);
+      const appointmentEnd = new Date(appointmentsInShift[j].appointmentEndDate);
+
+      // Verificar si hay un intervalo libre entre el final de la cita anterior y el inicio de la actual
+      if (appointmentStart > previousAppointmentEndTime) {
+        freeTimeIntervals.push({
+          start: previousAppointmentEndTime,
+          end: appointmentStart,
+        });
       }
+
+      // Actualizar el final de la última cita procesada
+      previousAppointmentEndTime = appointmentEnd;
     }
-    
-    // Verificar si hay tiempo libre después de la última cita, dentro del rango del turno de trabajo
-    if (previousAppointmentEndTime.getTime() < workShiftEnd.getTime()) {
+
+    // Verificar si hay tiempo libre después de la última cita, hasta el final del turno de trabajo
+    if (previousAppointmentEndTime < workShiftEnd) {
       freeTimeIntervals.push({
         start: previousAppointmentEndTime,
         end: workShiftEnd,
       });
     }
   }
-  
-  // Filtrar y devolver solo los intervalos dentro de los turnos de trabajo
+
+  // Filtrar y devolver solo los intervalos válidos (donde la hora de inicio es menor que la hora de fin)
   return freeTimeIntervals.filter(interval => interval.start < interval.end);
 };
+
+export const getAvailableAppointmentsByWorkshift = async (intervals, duration) => {
+  const result = [];
+
+  intervals.forEach(interval => {
+    let start = new Date(interval.start);
+    const end = new Date(interval.end);
+
+    while (start < end) {
+      result.push({ appointmentDate: start.toISOString() });
+      start = new Date(start.getTime() + duration * 60000);
+    }
+  });
+
+  return result;
+}
