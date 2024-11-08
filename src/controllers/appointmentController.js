@@ -4,6 +4,7 @@ import {
   isDateInPast,
   isDateMoreThan30Days,
   isAvailable,
+  validateField
 } from '../utils/validation.js';
 import { 
   getAppointmentsWorkshiftByDoctorAndDate,
@@ -281,7 +282,11 @@ export const noShowAppointment = async (req, res) => {
 export const getAvailableAppointments = async (req, res) => {
   try {
     const { clinicId, doctorId, date } = req.query;
-
+    
+    if (!validateField(clinicId, 'uuid') || !validateField(doctorId, 'uuid') || !validateField(date, 'date')) {
+      logger.error('Error obtaining available appointments: Invalid or missing required fields');
+      return res.status(400).json({ error: 'You need to provide valid clinicId, doctorId, and date' });
+    }
     const appointments = await getAppointmentsWorkshiftByDoctorAndDate(clinicId, doctorId, date);
     const intervals = await getFreeTimeIntervals(appointments);
     const availableAppointments = await getAvailableAppointmentsByWorkshift(intervals, 30); // 30 minutes duration by default
