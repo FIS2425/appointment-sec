@@ -52,6 +52,7 @@
     "cors": "2.8.5",
     "express": "4.21.1",
     "mongoose": "8.8.0",
+    "openapi-to-md": "1.0.24",
     "rabbitmq-client": "5.0.0",
     "swagger-ui-express": "5.0.1",
     "uuid": "11.0.2",
