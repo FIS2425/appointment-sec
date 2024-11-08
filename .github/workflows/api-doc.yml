@@ -38,5 +38,5 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         force: true
         files: openapi.md
-        message: '📝 Update OpenAPI documentation'
+        message: 'docs(api): updated openapi.md 📝'
         branch: ${{ github.head_ref || 'main' }}
