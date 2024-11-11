@@ -52,3 +52,24 @@ export async function isAvailable(id, idKey, appointmentDate, duration = 30) {
 
   return overlappingAppointments.length === 0;
 }
+
+export function validateField(value, type) {
+  switch (type) {
+  case 'uuid': {
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    return uuidRegex.test(value);
+  }
+  case 'date': {
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    return dateRegex.test(value) && !isNaN(Date.parse(value));
+  }
+  case 'number':
+    return typeof value === 'number' && !isNaN(value);
+  case 'string':
+    return typeof value === 'string';
+  case 'boolean':
+    return typeof value === 'boolean';
+  default:
+    return false;
+  }
+}

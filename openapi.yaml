@@ -52,6 +52,64 @@ paths:
                 $ref: '#/components/schemas/Appointment'
         '500':
           description: Error creating the appointment
+    
+  /appointments/available:
+    get:
+      tags:
+        - Appointments
+      summary: Get available appointment slots
+      description: Retrieve available appointment slots for a specific clinic, doctor, and date.
+      parameters:
+        - in: query
+          name: clinicId
+          required: true
+          schema:
+            type: string
+          description: The ID of the clinic to check for available appointments
+        - in: query
+          name: doctorId
+          required: true
+          schema:
+            type: string
+          description: The ID of the doctor to check for available appointments
+        - in: query
+          name: date
+          required: true
+          schema:
+            type: string
+            format: date
+          description: The date to check for available appointments (in YYYY-MM-DD format)
+      responses:
+        '200':
+          description: List of available appointment slots
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    startTime:
+                      type: string
+                      format: time
+                      description: Start time of the available appointment slot
+                    endTime:
+                      type: string
+                      format: time
+                      description: End time of the available appointment slot
+        '500':
+          description: Error obtaining clinic appointments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Error obtaining clinic appointments
+                  message:
+                    type: string
+                    example: Detailed error message
 
   /appointments/{id}:
     get:

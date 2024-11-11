@@ -17,4 +17,7 @@ export default defineConfig({
       '@tests': path.resolve(__dirname, './tests'),
     },
   },
+  env: {
+    NODE_ENV: 'test',
+  },
 });
