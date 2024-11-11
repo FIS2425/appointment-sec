@@ -51,12 +51,12 @@
     "cookie-parser": "1.4.7",
     "cors": "2.8.5",
     "express": "4.21.1",
-    "mongoose": "8.8.0",
     "openapi-to-md": "1.0.24",
     "rabbitmq-client": "5.0.0",
+    "mongoose": "8.8.1",
     "swagger-ui-express": "5.0.1",
-    "uuid": "11.0.2",
-    "winston": "3.16.0",
+    "uuid": "11.0.3",
+    "winston": "3.17.0",
     "yamljs": "0.3.0"
   }
 }
