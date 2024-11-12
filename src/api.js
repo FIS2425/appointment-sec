@@ -25,7 +25,7 @@ export default function () {
     res.send('API is running correctly');
   });
 
-  app.use('/appointments', appointment);
+  app.use('/api/v1/appointments', appointment);
 
   app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
