@@ -1,19 +1,19 @@
 version: "3.8"
 
 services:
-  mongodb:
+  mongodb-appointments:
     restart: unless-stopped
     image: mongo:latest
-    container_name: mongodb
+    container_name: mongodb-appointments
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGOADMIN}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGOPASS}
     networks:
-      - backend
+      - backend-appointments
     ports:
       - "27017:27017"
     volumes:
-      - mongo-data:/data/db
+      - mongo-data-appointments:/data/db
 
   appointment:
     restart: unless-stopped
@@ -25,29 +25,13 @@ services:
       - MONGODB_URL=${MONGOURL}
       - PORT=3012
     depends_on:
-      - mongodb
+      - mongodb-appointments
     networks:
-      - backend
+      - backend-appointments
     ports:
       - "3012:3012"
     volumes:
       - .:/appointment-svc
-
-  workshift:
-    restart: unless-stopped
-    image: cloudmedix/workshift
-    container_name: workshift
-    environment:
-      - MONGODB_URL=${MONGOURL_WORKSHIFT}
-      - PORT=3011
-    depends_on:
-      - mongodb
-    networks:
-      - backend
-    ports:
-      - "3011:3011"
-    volumes:
-      - .env:/workshift-svc/.env
 
   rabbitmq:
     image: rabbitmq:management-alpine
@@ -56,13 +40,16 @@ services:
       - RABBITMQ_DEFAULT_USER=${RABBIT_USERNAME}
       - RABBITMQ_DEFAULT_PASS=${RABBIT_PASSWORD}
     networks:
-      - backend
+      - backend-appointments
+      - rabbit-network
     ports:
       - "5672:5672"
 
 volumes:
-  mongo-data:
+  mongo-data-appointments:
 
 networks:
-  backend:
+  backend-appointments:
     driver: bridge
+  rabbit-network:
+    external: true
