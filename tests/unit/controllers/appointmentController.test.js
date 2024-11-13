@@ -1,5 +1,6 @@
 import { beforeAll, afterAll, describe, expect, it } from 'vitest';
-import Appointment from '../../../src/schemas/Appointment.js'
+import Appointment from '../../../src/schemas/Appointment.js';
+import Workshift from '../../../src/schemas/Workshift.js';
 import { v4 as uuidv4 } from 'uuid';
 import * as db from '../../setup/database';
 import { request } from '../../setup/setup';
@@ -87,9 +88,18 @@ tomorrowPlus15min.setMinutes(tomorrowPlus15min.getMinutes() + 15);
 let monthFromNow = new Date();
 monthFromNow.setDate(monthFromNow.getDate() + 31);
 
+const workshift = {
+  clinicId: sampleAppointments[0].clinicId,
+  doctorId: sampleAppointments[0].doctorId,
+  startDate: today,
+  duration: 120,
+  endDate: new Date(today.getTime() + 120 * 60000),
+}
+
 beforeAll(async () => {
   await db.clearDatabase();
   await Appointment.insertMany(sampleAppointments);
+  await Workshift.create(workshift);
 });
 
 
@@ -116,6 +126,18 @@ describe('APPOINTMENT ENDPOINTS TEST', () => {
     it('should return 404', async () => {
       const response = await request.get(`/appointments/${uuidv4()}`);
       expect(response.status).toBe(404);
+    });
+  });
+  describe('test GET /appointments/available', () => {
+    it('should return 200 and the correct appointments', async () => {
+      const doctorId = sampleAppointments[0].doctorId;
+      const clinicId = sampleAppointments[0].clinicId;
+      const date = today;
+      const dateString = date.toISOString().split('T')[0];
+      const response = await request.get(`/appointments/available?doctorId=${doctorId}&clinicId=${clinicId}&date=${dateString}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.length).toBe(4); // 4 appointments available in a workshift of 120 mins
     });
   });
   describe('test POST /appointments', () => {
