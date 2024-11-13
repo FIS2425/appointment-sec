@@ -30,12 +30,18 @@ const WorkshiftSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  endDate: {
+    type: Date,
+  },
   duration: {
     type: Number, // In minutes
     required: true,
+    default: 480, // 8 hours
+    min: [60, 'Duration must be at least 60 minutes'],
   }
 }, {
   timestamps: true
 });
 
-export default mongoose.model('Workshift', WorkshiftSchema);
+const Workshift = mongoose.model('Workshift', WorkshiftSchema);
+export default Workshift;
