@@ -5,13 +5,13 @@ import YAML from 'yamljs';
 import appointment from './routes/appointmentRoutes.js';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-import { syncWorkshifts } from './config/workshiftSync.js';
+import { startConsumer } from './config/rabbitmq.js';
 
 const swaggerDocument = YAML.load('./openapi.yaml');
 
 export default function () {
   if (process.env.NODE_ENV !== 'test') {
-    syncWorkshifts();
+    startConsumer();
   }
   const app = express();
 

@@ -1,74 +1,40 @@
-import amqp from 'amqplib/callback_api.js';
 import Workshift from '../schemas/Workshift.js';
 
-async function syncWorkshifts() {
-  amqp.connect('amqp://rabbitmq', (error0, connection) => {
-    if (error0) {
-      throw error0;
-    }
-
-    connection.createChannel((error1, channel) => {
-      if (error1) {
-        throw error1;
-      }
-
-      const exchange = 'logs';
-
-      channel.assertExchange(exchange, 'fanout', {
-        durable: false
-      });
-
-      channel.assertQueue('', {
-        exclusive: true
-      }, (error2, q) => {
-        if (error2) {
-          throw error2;
-        }
-
-        console.log(' [*] Waiting for messages in %s. To exit press CTRL+C', q.queue);
-
-        channel.bindQueue(q.queue, exchange, '');
-
-        channel.consume(q.queue, (msg) => {
-          if (msg.content) {
-            const workshiftData = JSON.parse(msg.content.toString());
-            handleWorkshiftEvent(workshiftData);
-          }
-        }, {
-          noAck: true
-        });
-      });
-    });
-  });
-}
-
-async function handleWorkshiftEvent(workshiftData) {
-  switch (workshiftData.event) {
-  case 'created':
-    await createWorkshiftView(workshiftData.data);
+export async function processWorkshiftMessage(msg) {
+  const obj = JSON.parse(msg.content.toString());
+  console.log('Received message:', obj);
+  switch (obj.event) {
+  case 'workshift-sync':
+    await syncWorkshifts(obj.workshifts);
     break;
-  case 'updated':
-    await updateWorkshiftView(workshiftData.data);
+  case 'workshift-created':
+    await createWorkshiftView(obj.workshift);
     break;
-  case 'deleted':
-    await deleteWorkshiftView(workshiftData.data);
+  case 'workshift-updated':
+    await updateWorkshiftView(obj.workshift);
+    break;
+  case 'workshift-deleted':
+    await deleteWorkshiftView(obj.workshift);
     break;
   default:
-    console.log('Unknown workshift event:', workshiftData.event);
+    console.error('Unknown event type:', obj.event);
   }
 }
 
-async function createWorkshiftView(workshiftData) {
+export async function createWorkshiftView(workshiftData) {
   const workshift = new Workshift(workshiftData);
   await workshift.save();
 }
 
-async function updateWorkshiftView(workshiftData) {
+export async function updateWorkshiftView(workshiftData) {
   await Workshift.findByIdAndUpdate(workshiftData._id, workshiftData);
 }
 
-async function deleteWorkshiftView(workshiftData) {
+export async function deleteWorkshiftView(workshiftData) {
   await Workshift.findByIdAndDelete(workshiftData._id);
 }
 
-export { syncWorkshifts };
+export async function syncWorkshifts(workshifts) {
+  await Workshift.deleteMany({});
+  await Workshift.insertMany(workshifts);
+}
