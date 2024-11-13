@@ -8,7 +8,8 @@ async function connectRabbitMQ() {
     try {
       const connection = await amqp.connect(`amqp://${process.env.RABBIT_HOST || 'localhost'}`);
       channel = await connection.createChannel();
-      console.log('RabbitMQ connected and channel created');
+      console.log('[RabbitMQ] Connected and channel created');
+
 
       // Close connection when the Node.js process ends
       process.on('exit', () => {
@@ -45,7 +46,7 @@ async function startConsumer() {
 
     // Bind the queue to the exchange
     await channel.bindQueue(queueName, exchangeName, '');
-    console.log(`Waiting for messages in ${queueName}...`);
+    console.log(`Waiting for messages in queue: ${queueName}`);
 
     channel.consume(queueName, (msg) => {
       if (msg !== null) {

@@ -2,7 +2,6 @@ import Workshift from '../schemas/Workshift.js';
 
 export async function processWorkshiftMessage(msg) {
   const obj = JSON.parse(msg.content.toString());
-  console.log('Received message:', obj);
   switch (obj.event) {
   case 'workshift-sync':
     await syncWorkshifts(obj.workshifts);
