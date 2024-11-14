@@ -6,11 +6,12 @@ import {
   isAvailable,
   validateField
 } from '../utils/validation.js';
-import { 
+import {
   getAppointmentsWorkshiftByDoctorAndDate,
   getFreeTimeIntervals,
   getAvailableAppointmentsByWorkshift,
 } from '../utils/workshiftQueries.js';
+import { getLatituteLongitude, getWeather } from '../utils/weather.js';
 import logger from '../config/logger.js';
 
 let appointmentFields = [
@@ -468,7 +469,7 @@ export const noShowAppointment = async (req, res) => {
 export const getAvailableAppointments = async (req, res) => {
   try {
     const { clinicId, doctorId, date } = req.query;
-    
+
     if (!validateField(clinicId, 'uuid') || !validateField(doctorId, 'uuid') || !validateField(date, 'date')) {
       logger.error('Error obtaining available appointments: Invalid or missing required fields', { 
         method: req.method,
@@ -495,6 +496,38 @@ export const getAvailableAppointments = async (req, res) => {
     });
     res.status(500).json({
       error: 'Error obtaining clinic appointments',
+      message: error.message,
+    });
+  }
+}
+
+export const getAppointmentWeather = async (req, res) => {
+  try {
+    const appointment = await Appointment.findById(req.params.id);
+    if (!appointment) {
+      logger.error(`Appointment ${req.params.id} not found`);
+      return res.status(404).json({ error: 'Appointment not found' });
+    }
+    // todo: get clinic location, now im mocking it
+    const clinicZipCode = '41012';
+    const clinicCountryCode = 'ES';
+
+    // const location = await getLatituteLongitude(clinicZipCode, clinicCountryCode);
+    const location = { latitude: 37.3886303, longitude: -5.9824303 };
+
+    console.log(location);
+
+    if (!location) {
+      logger.error(`Error obtaining location for clinic ${clinicZipCode}, ${clinicCountryCode}`);
+      return res.status(500).json({ error: 'Error obtaining location' });
+    }
+
+    const weather = await getWeather(location.latitude, location.longitude);
+
+    return res.status(200).json(weather);
+  } catch (error) {
+    res.status(500).json({
+      error: 'Error obtaining weather data',
       message: error.message,
     });
   }
