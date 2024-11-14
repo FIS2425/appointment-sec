@@ -1,95 +1,23 @@
 import { beforeAll, afterAll, describe, expect, it } from 'vitest';
-import Appointment from '../../../src/schemas/Appointment.js'
+import Appointment from '../../../src/schemas/Appointment.js';
+import Workshift from '../../../src/schemas/Workshift.js';
 import { v4 as uuidv4 } from 'uuid';
 import * as db from '../../setup/database';
 import { request } from '../../setup/setup';
+import {
+  today,
+  tomorrow,
+  tomorrowPlus15min,
+  sampleAppointments,
+  workshift,
+  tenAM
+} from '../utils/testData';
 
-const sampleAppointments = [
-  {
-    _id: uuidv4(),
-    patientId: uuidv4(),
-    clinicId: uuidv4(),
-    doctorId: uuidv4(),
-    specialty: 'family_medicine',
-    appointmentDate: new Date('2024-01-15T10:30:00Z'),
-    status: 'pending',
-  },
-  {
-    _id: uuidv4(),
-    patientId: uuidv4(),
-    clinicId: uuidv4(),
-    doctorId: uuidv4(),
-    specialty: 'dermatology',
-    appointmentDate: new Date('2024-02-10T14:00:00Z'),
-    status: 'pending',
-  },
-  {
-    _id: uuidv4(),
-    patientId: uuidv4(),
-    clinicId: uuidv4(),
-    doctorId: uuidv4(),
-    specialty: 'pediatrics',
-    appointmentDate: new Date('2024-03-05T09:00:00Z'),
-    status: 'completed',
-  },
-  {
-    _id: uuidv4(),
-    patientId: uuidv4(),
-    clinicId: uuidv4(),
-    doctorId: uuidv4(),
-    specialty: 'cardiology',
-    appointmentDate: new Date('2024-03-20T11:30:00Z'),
-    status: 'canceled',
-  },
-  {
-    _id: uuidv4(),
-    patientId: uuidv4(),
-    clinicId: uuidv4(),
-    doctorId: uuidv4(),
-    specialty: 'orthopedics',
-    appointmentDate: new Date('2024-04-01T15:00:00Z'),
-    status: 'pending',
-  },
-  {
-    _id: uuidv4(),
-    patientId: uuidv4(),
-    clinicId: uuidv4(),
-    doctorId: uuidv4(),
-    specialty: 'gynecology',
-    appointmentDate: new Date('2024-04-01T15:00:00Z'),
-    status: 'pending',
-  },
-  {
-    _id: uuidv4(),
-    patientId: uuidv4(),
-    clinicId: uuidv4(),
-    doctorId: uuidv4(),
-    specialty: 'family_medicine',
-    appointmentDate: new Date('2024-04-01T15:00:00Z'),
-    status: 'pending',
-  }
-];
-
-
-let today = new Date();
-today.setHours(today.getHours() + 1);
-
-let yesterday = new Date();
-yesterday.setDate(yesterday.getDate() - 1);
-
-let tomorrow = new Date();
-tomorrow.setDate(tomorrow.getDate() + 1);
-
-let tomorrowPlus15min = new Date();
-tomorrowPlus15min.setDate(tomorrowPlus15min.getDate() + 1);
-tomorrowPlus15min.setMinutes(tomorrowPlus15min.getMinutes() + 15);
-
-let monthFromNow = new Date();
-monthFromNow.setDate(monthFromNow.getDate() + 31);
 
 beforeAll(async () => {
   await db.clearDatabase();
   await Appointment.insertMany(sampleAppointments);
+  await Workshift.create(workshift);
 });
 
 
@@ -116,6 +44,17 @@ describe('APPOINTMENT ENDPOINTS TEST', () => {
     it('should return 404', async () => {
       const response = await request.get(`/appointments/${uuidv4()}`);
       expect(response.status).toBe(404);
+    });
+  });
+  describe('test GET /appointments/available', () => {
+    it('should return 200 and the correct appointments', async () => {
+      const doctorId = sampleAppointments[0].doctorId;
+      const clinicId = sampleAppointments[0].clinicId;
+      const date = tenAM;
+      const dateString = date.toISOString().split('T')[0];
+      const response = await request.get(`/appointments/available?doctorId=${doctorId}&clinicId=${clinicId}&date=${dateString}`);
+      expect(response.status).toBe(200);
+      expect(response.body.length).toBe(7); // 7 appointments available in a workshift of 120 mins
     });
   });
   describe('test POST /appointments', () => {

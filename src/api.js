@@ -5,13 +5,13 @@ import YAML from 'yamljs';
 import appointment from './routes/appointmentRoutes.js';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-import { syncWorkshifts } from './config/workshiftSync.js';
+import { startConsumer } from './config/rabbitmq.js';
 
 const swaggerDocument = YAML.load('./openapi.yaml');
 
 export default function () {
   if (process.env.NODE_ENV !== 'test') {
-    syncWorkshifts();
+    startConsumer();
   }
   const app = express();
 
@@ -25,7 +25,7 @@ export default function () {
     res.send('API is running correctly');
   });
 
-  app.use('/api/v1/appointments', appointment);
+  app.use(`${process.env.API_PREFIX || ''}/appointments`, appointment);
 
   app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
