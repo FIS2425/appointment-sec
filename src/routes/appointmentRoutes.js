@@ -12,6 +12,7 @@ import {
   completeAppointment,
   noShowAppointment,
   getAvailableAppointments,
+  getAppointmentWeather,
 } from '../controllers/appointmentController.js';
 import { verifyAuth } from '../middleware/verifyAuth.js';
 
@@ -30,6 +31,7 @@ router.put('/:id/complete', completeAppointment);
 router.put('/:id/noshow', noShowAppointment);
 
 router.get('/:id', getAppointmentById);
+router.get('/:id/weather', getAppointmentWeather);
 router.put('/:id', updateAppointment);
 router.delete('/:id', deleteAppointment);
 
