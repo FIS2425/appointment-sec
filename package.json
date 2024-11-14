@@ -56,7 +56,11 @@
     "kafka-node": "5.0.0",
     "openapi-to-md": "1.0.24",
     "rabbitmq-client": "5.0.0",
+<<<<<<< HEAD
     "mongoose": "8.8.1",
+=======
+    "redis": "4.7.0",
+>>>>>>> 2dcb54b (feat: added dragonfly cache)
     "swagger-ui-express": "5.0.1",
     "uuid": "11.0.3",
     "winston": "3.17.0",
