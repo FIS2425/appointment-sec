@@ -1,5 +1,16 @@
 services:
-  mongodb:
+  dragonfly:
+    restart: unless-stopped
+    image: ghcr.io/dragonflydb/dragonfly:latest
+    container_name: dragonfly
+    ports:
+      - "6379:6379"
+    networks:
+      - backend-appointments
+    volumes:
+      - dragonfly-data:/data/dragonfly
+
+  mongodb-appointments:
     restart: unless-stopped
     image: mongo:latest
     container_name: mongodb-appointments
@@ -44,17 +55,6 @@ services:
       - rabbit-network
     ports:
       - "5672:5672"
-
-  dragonfly:
-    restart: unless-stopped
-    image: ghcr.io/dragonflydb/dragonfly:latest
-    container_name: dragonfly
-    ports:
-      - "6379:6379"
-    networks:
-      - backend-appointments
-    volumes:
-      - dragonfly-data:/data/dragonfly
 
 volumes:
   mongo-data-appointments:

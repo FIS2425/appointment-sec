@@ -11,7 +11,7 @@ import {
   getFreeTimeIntervals,
   getAvailableAppointmentsByWorkshift,
 } from '../utils/workshiftQueries.js';
-import { getLatituteLongitude, getWeather } from '../utils/weather.js';
+import { getWeather } from '../utils/weather.js';
 import logger from '../config/logger.js';
 
 let appointmentFields = [
@@ -508,21 +508,12 @@ export const getAppointmentWeather = async (req, res) => {
       logger.error(`Appointment ${req.params.id} not found`);
       return res.status(404).json({ error: 'Appointment not found' });
     }
-    // todo: get clinic location, now im mocking it
+    // todo: get clinic location and cache it, now im mocking it
     const clinicZipCode = '41012';
     const clinicCountryCode = 'ES';
+    console.log(clinicZipCode, clinicCountryCode, appointment.appointmentDate);
 
-    // const location = await getLatituteLongitude(clinicZipCode, clinicCountryCode);
-    const location = { latitude: 37.3886303, longitude: -5.9824303 };
-
-    console.log(location);
-
-    if (!location) {
-      logger.error(`Error obtaining location for clinic ${clinicZipCode}, ${clinicCountryCode}`);
-      return res.status(500).json({ error: 'Error obtaining location' });
-    }
-
-    const weather = await getWeather(location.latitude, location.longitude);
+    const weather = await getWeather(clinicZipCode, clinicCountryCode, appointment.appointmentDate);
 
     return res.status(200).json(weather);
   } catch (error) {
