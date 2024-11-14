@@ -2,7 +2,7 @@
 
 > Version 1.0.0
 
-Appointment microservice for medical consultation application. Handles scheduling, retrieval, updating, and cancellation of patient appointments.
+Appointment management microservice for medical consultation application. Handles scheduling, retrieval, updating, and cancellation of patient appointments.
 
 
 ## Path Table
@@ -21,6 +21,7 @@ Appointment microservice for medical consultation application. Handles schedulin
 | PUT | [/appointments/{id}/cancel](#putappointmentsidcancel) | Cancel an appointment |
 | PUT | [/appointments/{id}/complete](#putappointmentsidcomplete) | Complete an appointment |
 | PUT | [/appointments/{id}/noshow](#putappointmentsidnoshow) | Mark an appointment as no-show |
+| GET | [/appointments/{id}/weather](#getappointmentsidweather) | Get weather forecast for appointment |
 
 ## Reference Table
 
@@ -584,6 +585,24 @@ cookieAuth
 - 404 Appointment not found
 
 - 500 Error marking appointment as no-show
+
+***
+
+### [GET]/appointments/{id}/weather
+
+- Summary  
+Get weather forecast for appointment
+
+- Description  
+Retrieve weather forecast for the location and date of a specific appointment by ID.
+
+#### Responses
+
+- 200 Weather forecast for the appointment date and location
+
+- 404 Appointment or weather data not found
+
+- 500 Error retrieving the weather information
 
 ## References
 
