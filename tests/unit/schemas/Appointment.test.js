@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import Appointment from '../../../src/schemas/Appointment.js'
 import { v4 as uuidv4 } from 'uuid';
+import { tenAM } from '../utils/testData.js';
 
 describe('APPOINTMENT VALIDATION TEST', () => {
   describe('all fields are required', () => {
@@ -24,7 +25,7 @@ describe('APPOINTMENT VALIDATION TEST', () => {
         clinicId: validClinicId,
         doctorId: validDoctorId,
         specialty: 'family_medicine',
-        appointmentDate: new Date('2024-01-15T10:30:00Z'),
+        appointmentDate: tenAM,
         status: 'pending',
       });
       await appointment.save();
@@ -46,7 +47,7 @@ describe('APPOINTMENT VALIDATION TEST', () => {
         clinicId: invalidClinicId,
         doctorId: invalidDoctorId,
         specialty: 'family_medicine',
-        appointmentDate: new Date('2024-01-15T10:30:00Z'),
+        appointmentDate: tenAM,
         status: 'pending',
       });
       await expect(appointment.save()).rejects.toThrowError('Appointment validation failed: _id: invalidId not a valid UUID!, patientId: invalidPatientId not a valid UUID!, clinicId: invalidClinicId not a valid UUID!, doctorId: invalidDoctorId not a valid UUID!');
@@ -62,7 +63,7 @@ describe('APPOINTMENT VALIDATION TEST', () => {
         clinicId: uuidv4(),
         doctorId: uuidv4(),
         specialty: validSpecialty,
-        appointmentDate: new Date('2024-01-15T10:30:00Z'),
+        appointmentDate: tenAM,
         status: 'pending',
       });
       await appointment.save();
@@ -76,7 +77,7 @@ describe('APPOINTMENT VALIDATION TEST', () => {
         clinicId: uuidv4(),
         doctorId: uuidv4(),
         specialty: 'invalidSpecialty',
-        appointmentDate: new Date('2024-01-15T10:30:00Z'),
+        appointmentDate: tenAM,
         status: 'pending',
       });
       await expect(appointment.save()).rejects.toThrowError('Appointment validation failed: specialty: `invalidSpecialty` is not a valid enum value for path `specialty`.');
@@ -92,7 +93,7 @@ describe('APPOINTMENT VALIDATION TEST', () => {
         clinicId: uuidv4(),
         doctorId: uuidv4(),
         specialty: 'family_medicine',
-        appointmentDate: new Date('2024-01-15T10:30:00Z'),
+        appointmentDate: tenAM,
         status: validStatus,
       });
       await appointment.save();
@@ -106,7 +107,7 @@ describe('APPOINTMENT VALIDATION TEST', () => {
         clinicId: uuidv4(),
         doctorId: uuidv4(),
         specialty: 'family_medicine',
-        appointmentDate: new Date('2024-01-15T10:30:00Z'),
+        appointmentDate: tenAM,
         status: 'invalidStatus',
       });
       await expect(appointment.save()).rejects.toThrowError('Appointment validation failed: status: `invalidStatus` is not a valid enum value for path `status`.');
