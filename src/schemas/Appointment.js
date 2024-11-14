@@ -48,6 +48,12 @@ const AppointmentSchema = new mongoose.Schema({
   appointmentDate: {
     type: Date,
     required: true,
+    validate: {
+      validator: (date) => {
+        return date > new Date();
+      },
+      message: 'Appointment date must be in the future',
+    }
   },
   duration: {
     type: Number,
@@ -75,6 +81,14 @@ AppointmentSchema.pre('save', function (next) {
 AppointmentSchema.pre('findByIdAndUpdate', function (next) {
   this._update.appointmentEndDate = new Date(this._update.appointmentDate);
   this._update.appointmentEndDate.setMinutes(this._update.appointmentEndDate.getMinutes() + this._update.duration);
+  next();
+});
+
+AppointmentSchema.pre('insertMany', function (next, docs) {
+  docs.forEach((doc) => {
+    doc.appointmentEndDate = new Date(doc.appointmentDate);
+    doc.appointmentEndDate.setMinutes(doc.appointmentEndDate.getMinutes() + doc.duration);
+  });
   next();
 });
 
