@@ -1,16 +1,18 @@
-import { beforeAll, afterAll, describe, expect, it } from 'vitest';
+import { beforeAll, afterAll, describe, expect, it, beforeEach } from 'vitest';
 import Appointment from '../../../src/schemas/Appointment.js';
 import Workshift from '../../../src/schemas/Workshift.js';
 import { v4 as uuidv4 } from 'uuid';
 import * as db from '../../setup/database';
 import { request } from '../../setup/setup';
+import jwt from 'jsonwebtoken';
 import {
   today,
   tomorrow,
   tomorrowPlus15min,
   sampleAppointments,
   workshift,
-  tenAM
+  tenAM,
+  sampleUser,
 } from '../utils/testData';
 
 
@@ -24,6 +26,15 @@ beforeAll(async () => {
 afterAll(async () => {
   await db.clearDatabase();
 });
+
+beforeEach(async () => {
+  const token = jwt.sign(
+    { userId: sampleUser._id, roles: sampleUser.roles },
+    process.env.VITE_JWT_SECRET
+  );
+  request.set('Cookie', `token=${token}`);
+});
+
 
 describe('APPOINTMENT ENDPOINTS TEST', () => {
   describe('test GET /appointments', () => {
