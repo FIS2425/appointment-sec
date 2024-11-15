@@ -19,6 +19,8 @@ paths:
     get:
       tags:
         - Appointments
+      security:
+        - cookieAuth: []
       summary: Get all appointments
       description: Retrieve a list of all appointments in the system.
       responses:
@@ -35,6 +37,8 @@ paths:
     post:
       tags:
           - Appointments
+      security:
+        - cookieAuth: []
       summary: Create a new appointment
       description: Schedule a new appointment for a patient with specified details.
       requestBody:
@@ -57,6 +61,8 @@ paths:
     get:
       tags:
         - Appointments
+      security:
+        - cookieAuth: []
       summary: Get available appointment slots
       description: Retrieve available appointment slots for a specific clinic, doctor, and date.
       parameters:
@@ -115,6 +121,8 @@ paths:
     get:
       tags:
         - Appointments
+      security:
+        - cookieAuth: []
       summary: Get appointment by ID
       description: Retrieve details of a specific appointment by its ID.
       parameters:
@@ -139,6 +147,8 @@ paths:
     put:
       tags:
         - Appointments
+      security:
+        - cookieAuth: []
       summary: Update an appointment
       description: Modify details of an existing appointment by ID.
       parameters:
@@ -169,6 +179,8 @@ paths:
     delete:
       tags:
         - Appointments
+      security:
+        - cookieAuth: []
       summary: Delete an appointment
       description: Remove an appointment from the system by its ID.
       parameters:
@@ -198,6 +210,8 @@ paths:
     put:
       tags:
         - Appointments
+      security:
+        - cookieAuth: []
       summary: Cancel an appointment
       description: Change the status of an appointment to "cancelled" by its ID.
       parameters:
@@ -225,6 +239,8 @@ paths:
     put:
       tags:
         - Appointments
+      security:
+        - cookieAuth: []
       summary: Complete an appointment
       description: Change the status of an appointment to "completed" by its ID.
       parameters:
@@ -252,6 +268,8 @@ paths:
     put:
       tags:
         - Appointments
+      security:
+        - cookieAuth: []
       summary: Mark an appointment as no-show
       description: Change the status of an appointment to "no-show" by its ID.
       parameters:
@@ -279,6 +297,8 @@ paths:
     get:
       tags:
         - Appointments
+      security:
+        - cookieAuth: []
       summary: Get all appointments for a patient
       description: Retrieve a list of all appointments for a specific patient by their ID.
       parameters:
@@ -304,6 +324,8 @@ paths:
     get:
       tags:
         - Appointments
+      security:
+        - cookieAuth: []
       summary: Get all appointments for a doctor
       description: Retrieve a list of all appointments for a specific doctor by their ID.
       parameters:
@@ -329,6 +351,8 @@ paths:
     get:
       tags:
         - Appointments
+      security:
+        - cookieAuth: []
       summary: Get all appointments for a clinic
       description: Retrieve a list of all appointments for a specific clinic by its ID.
       parameters:
@@ -426,3 +450,9 @@ components:
           type: string
           description: Updated status of the appointment
           enum: ["pending", "completed", "cancelled", "no-show"]
+
+  securitySchemes:
+    cookieAuth:
+        type: apiKey
+        in: cookie
+        name: token
