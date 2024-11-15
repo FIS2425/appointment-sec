@@ -29,6 +29,7 @@ Appointment management microservice for medical consultation application.  Handl
 | Appointment | [#/components/schemas/Appointment](#componentsschemasappointment) |  |
 | AppointmentCreate | [#/components/schemas/AppointmentCreate](#componentsschemasappointmentcreate) |  |
 | AppointmentUpdate | [#/components/schemas/AppointmentUpdate](#componentsschemasappointmentupdate) |  |
+| cookieAuth | [#/components/securitySchemes/cookieAuth](#componentssecurityschemescookieauth) |  |
 
 ## Path Details
 
@@ -41,6 +42,9 @@ Get all appointments
 
 - Description  
 Retrieve a list of all appointments in the system.
+
+- Security  
+cookieAuth  
 
 #### Responses
 
@@ -80,6 +84,9 @@ Create a new appointment
 
 - Description  
 Schedule a new appointment for a patient with specified details.
+
+- Security  
+cookieAuth  
 
 #### RequestBody
 
@@ -139,6 +146,9 @@ Get available appointment slots
 - Description  
 Retrieve available appointment slots for a specific clinic, doctor, and date.
 
+- Security  
+cookieAuth  
+
 #### Parameters(Query)
 
 ```ts
@@ -189,6 +199,9 @@ Get all appointments for a clinic
 - Description  
 Retrieve a list of all appointments for a specific clinic by its ID.
 
+- Security  
+cookieAuth  
+
 #### Responses
 
 - 200 List of appointments for the clinic
@@ -227,6 +240,9 @@ Get all appointments for a doctor
 
 - Description  
 Retrieve a list of all appointments for a specific doctor by their ID.
+
+- Security  
+cookieAuth  
 
 #### Responses
 
@@ -267,6 +283,9 @@ Get all appointments for a patient
 - Description  
 Retrieve a list of all appointments for a specific patient by their ID.
 
+- Security  
+cookieAuth  
+
 #### Responses
 
 - 200 List of appointments for the patient
@@ -306,6 +325,9 @@ Delete an appointment
 - Description  
 Remove an appointment from the system by its ID.
 
+- Security  
+cookieAuth  
+
 #### Responses
 
 - 200 Appointment deleted successfully
@@ -331,6 +353,9 @@ Get appointment by ID
 
 - Description  
 Retrieve details of a specific appointment by its ID.
+
+- Security  
+cookieAuth  
 
 #### Responses
 
@@ -372,6 +397,9 @@ Update an appointment
 
 - Description  
 Modify details of an existing appointment by ID.
+
+- Security  
+cookieAuth  
 
 #### RequestBody
 
@@ -429,6 +457,9 @@ Cancel an appointment
 - Description  
 Change the status of an appointment to "cancelled" by its ID.
 
+- Security  
+cookieAuth  
+
 #### Responses
 
 - 200 Appointment cancelled successfully
@@ -472,6 +503,9 @@ Complete an appointment
 - Description  
 Change the status of an appointment to "completed" by its ID.
 
+- Security  
+cookieAuth  
+
 #### Responses
 
 - 200 Appointment completed successfully
@@ -514,6 +548,9 @@ Mark an appointment as no-show
 
 - Description  
 Change the status of an appointment to "no-show" by its ID.
+
+- Security  
+cookieAuth  
 
 #### Responses
 
@@ -600,5 +637,15 @@ Change the status of an appointment to "no-show" by its ID.
   appointmentDate?: string
   // Updated status of the appointment
   status?: enum[pending, completed, cancelled, no-show]
+}
+```
+
+### #/components/securitySchemes/cookieAuth
+
+```ts
+{
+  "type": "apiKey",
+  "in": "cookie",
+  "name": "token"
 }
 ```
