@@ -121,6 +121,20 @@ const workshift = {
   endDate: new Date(nineAM.getTime() + 240 * 60000),
 };
 
+const sampleUser = {
+  _id: uuidv4(),
+  email: 'testuser2@mail.com',
+  password: 'pAssw0rd!',
+  roles: ['patient'],
+};
+
+const sampleUser2 = {
+  _id: uuidv4(),
+  email: 'testuser2@mail.com',
+  password: 'pAssw0rd!',
+  roles: ['doctor'],
+};
+
 export {
   today,
   yesterday,
@@ -136,5 +150,7 @@ export {
   threePM,
   fourPM,
   sampleAppointments,
-  workshift
+  workshift,
+  sampleUser,
+  sampleUser2,
 };

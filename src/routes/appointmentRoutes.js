@@ -13,8 +13,11 @@ import {
   noShowAppointment,
   getAvailableAppointments,
 } from '../controllers/appointmentController.js';
+import { verifyAuth } from '../middleware/verifyAuth.js';
 
 const router = express.Router();
+
+router.use(verifyAuth);
 
 router.get('/', getAppointments);
 router.post('/', createAppointment);
