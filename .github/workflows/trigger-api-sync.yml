@@ -1,0 +1,20 @@
+name: Trigger API Gateway Sync
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'openapi.yaml'
+
+jobs:
+  notify-gateway:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger API Gateway Sync 🚀
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/FIS2425/api-gateway/dispatches \
+            -d '{"event_type": "spec-sync"}'
