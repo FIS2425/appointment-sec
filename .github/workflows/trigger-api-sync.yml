@@ -18,6 +18,6 @@ jobs:
         with:
           owner: FIS2425
           repo: api-gateway
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.DISPATCH_TOKEN }}
           workflow_file_name: sync-openapi.yml
           ref: ${{ github.ref_name }}
