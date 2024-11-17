@@ -2,7 +2,7 @@
 
 > Version 1.0.0
 
-Appointment management microservice for medical consultation application.  Handles scheduling, retrieval, updating, and cancellation of patient appointments.
+Appointment microservice for medical consultation application. Handles scheduling, retrieval, updating, and cancellation of patient appointments.
 
 
 ## Path Table
