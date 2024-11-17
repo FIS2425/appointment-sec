@@ -3,7 +3,7 @@ info:
   title: Appointment Service
   version: 1.0.0
   description: >
-    Appointment management microservice for medical consultation application. 
+    Appointment microservice for medical consultation application.
     Handles scheduling, retrieval, updating, and cancellation of patient appointments.
 
 servers:
@@ -56,7 +56,7 @@ paths:
                 $ref: '#/components/schemas/Appointment'
         '500':
           description: Error creating the appointment
-    
+
   /appointments/available:
     get:
       tags:
@@ -319,7 +319,7 @@ paths:
                   $ref: '#/components/schemas/Appointment'
         '500':
           description: Error retrieving appointments for the patient
-  
+
   /appointments/doctor/{doctorId}:
     get:
       tags:
@@ -346,7 +346,7 @@ paths:
                   $ref: '#/components/schemas/Appointment'
         '500':
           description: Error retrieving appointments for the doctor
-  
+
   /appointments/clinic/{clinicId}:
     get:
       tags:
