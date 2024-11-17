@@ -12,9 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger API Gateway Sync 🚀
-        run: |
-          curl -X POST \
-            -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/FIS2425/api-gateway/dispatches \
-            -d '{"event_type": "spec-sync"}'
+        uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: FIS2425
+          repo: api-gateway
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: sync-openapi.yml
+          ref: ${{ github.ref_name }}
