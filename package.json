@@ -53,7 +53,7 @@
     "express": "4.21.1",
     "jsonwebtoken": "9.0.2",
     "kafka-node": "5.0.0",
-    "mongoose": "8.8.1",
+    "mongoose": "8.8.2",
     "openapi-to-md": "1.0.24",
     "rabbitmq-client": "5.0.1",
     "swagger-ui-express": "5.0.1",
