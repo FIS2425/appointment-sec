@@ -10,7 +10,7 @@ services:
     volumes:
       - dragonfly-data:/data/dragonfly
 
-  mongodb-appointments:
+  mongodb:
     restart: unless-stopped
     image: mongo:latest
     container_name: mongodb-appointments
