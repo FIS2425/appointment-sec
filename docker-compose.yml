@@ -1,4 +1,15 @@
 services:
+  dragonfly:
+    restart: unless-stopped
+    image: ghcr.io/dragonflydb/dragonfly:latest
+    container_name: dragonfly
+    ports:
+      - "6379:6379"
+    networks:
+      - backend-appointments
+    volumes:
+      - dragonfly-data:/data/dragonfly
+
   mongodb:
     restart: unless-stopped
     image: mongo:latest
@@ -33,6 +44,8 @@ services:
       - API_PREFIX=/api/v1
       - JWT_SECRET=${JWT_SECRET}
       - KAFKA_HOST=${KAFKA_HOST}
+      - DRAGONFLY_HOST=${DRAGONFLY_HOST}
+      - DRAGONFLY_PORT=${DRAGONFLY_PORT}
     depends_on:
       - mongodb
     networks:
@@ -54,6 +67,7 @@ services:
 
 volumes:
   mongo-data-appointments:
+  dragonfly-data:
 
 networks:
   backend-appointments:

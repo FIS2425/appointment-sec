@@ -6,12 +6,33 @@ import {
   isAvailable,
   validateField
 } from '../utils/validation.js';
-import { 
+import {
   getAppointmentsWorkshiftByDoctorAndDate,
   getFreeTimeIntervals,
   getAvailableAppointmentsByWorkshift,
 } from '../utils/workshiftQueries.js';
+import { getWeather } from '../utils/weather.js';
 import logger from '../config/logger.js';
+import CircuitBreaker from 'opossum';
+
+const circuitBreakerAPIOptions = {
+  timeout: 3000,
+  errorThresholdPercentage: 30,
+  resetTimeout: 30000,
+};
+
+const weatherBreaker = new CircuitBreaker(getWeather, circuitBreakerAPIOptions);
+
+weatherBreaker.on('open', () => {
+  logger.warn('Circuit breaker opened for getWeather');
+});
+weatherBreaker.on('halfOpen', () => {
+  logger.info('Circuit breaker is half-open for getWeather');
+});
+weatherBreaker.on('close', () => {
+  logger.info('Circuit breaker closed for getWeather');
+});
+
 
 let appointmentFields = [
   'patientId',
@@ -468,7 +489,7 @@ export const noShowAppointment = async (req, res) => {
 export const getAvailableAppointments = async (req, res) => {
   try {
     const { clinicId, doctorId, date } = req.query;
-    
+
     if (!validateField(clinicId, 'uuid') || !validateField(doctorId, 'uuid') || !validateField(date, 'date')) {
       logger.error('Error obtaining available appointments: Invalid or missing required fields', { 
         method: req.method,
@@ -495,6 +516,32 @@ export const getAvailableAppointments = async (req, res) => {
     });
     res.status(500).json({
       error: 'Error obtaining clinic appointments',
+      message: error.message,
+    });
+  }
+}
+
+export const getAppointmentWeather = async (req, res) => {
+  try {
+    const appointment = await Appointment.findById(req.params.id);
+    if (!appointment) {
+      logger.error(`Appointment ${req.params.id} not found`);
+      return res.status(404).json({ error: 'Appointment not found' });
+    }
+    // todo: get clinic location and cache it, now im mocking it
+    const clinicZipCode = '41012';
+    const clinicCountryCode = 'ES';
+
+    const weather = await weatherBreaker.fire(clinicZipCode, clinicCountryCode, appointment.appointmentDate);
+
+    return res.status(200).json(weather);
+  } catch (error) {
+    if (error.message === 'Breaker is open') {
+      logger.error('Circuit breaker is open for getWeather, returning fallback response');
+      return res.status(503).json({ error: 'Weather service temporarily unavailable' });
+    }
+    res.status(500).json({
+      error: 'Error obtaining weather data',
       message: error.message,
     });
   }

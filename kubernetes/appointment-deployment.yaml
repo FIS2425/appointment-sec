@@ -78,6 +78,16 @@ spec:
                 secretKeyRef:
                   name: appointment-secrets
                   key: KAFKA_HOST
+            - name: DRAGONFLY_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: appointment-secrets
+                  key: DRAGONFLY_HOST
+            - name: DRAGONFLY_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: appointment-secrets
+                  key: DRAGONFLY_PORT
           image: ghcr.io/fis2425/appointment:latest
           name: appointment
           ports:

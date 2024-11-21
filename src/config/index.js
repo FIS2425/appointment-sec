@@ -1,14 +1,12 @@
 import mongoose from 'mongoose';
 import api from '../api.js';
-
 const MONGO_URI = process.env.MONGOURL;
 const PORT = process.env.PORT || 3001;
 
 mongoose
   .connect(MONGO_URI)
   .then(() => {
-    console.log('[Info] MongoDB connected');
-
+    console.log('[Info] MongoDB Connected');
     const app = api();
 
     app.listen(PORT, () => {
