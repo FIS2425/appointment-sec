@@ -49,6 +49,7 @@ export async function getWeather(zipCode, countryCode, date, lang = 'es') {
     } else {
       logger.error(`Unexpected error: ${error.message}`);
     }
+    throw error;
   }
 }
 

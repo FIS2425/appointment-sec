@@ -13,6 +13,26 @@ import {
 } from '../utils/workshiftQueries.js';
 import { getWeather } from '../utils/weather.js';
 import logger from '../config/logger.js';
+import CircuitBreaker from 'opossum';
+
+const circuitBreakerAPIOptions = {
+  timeout: 3000,
+  errorThresholdPercentage: 30,
+  resetTimeout: 30000,
+};
+
+const weatherBreaker = new CircuitBreaker(getWeather, circuitBreakerAPIOptions);
+
+weatherBreaker.on('open', () => {
+  logger.warn('Circuit breaker opened for getWeather');
+});
+weatherBreaker.on('halfOpen', () => {
+  logger.info('Circuit breaker is half-open for getWeather');
+});
+weatherBreaker.on('close', () => {
+  logger.info('Circuit breaker closed for getWeather');
+});
+
 
 let appointmentFields = [
   'patientId',
@@ -511,12 +531,15 @@ export const getAppointmentWeather = async (req, res) => {
     // todo: get clinic location and cache it, now im mocking it
     const clinicZipCode = '41012';
     const clinicCountryCode = 'ES';
-    console.log(clinicZipCode, clinicCountryCode, appointment.appointmentDate);
 
-    const weather = await getWeather(clinicZipCode, clinicCountryCode, appointment.appointmentDate);
+    const weather = await weatherBreaker.fire(clinicZipCode, clinicCountryCode, appointment.appointmentDate);
 
     return res.status(200).json(weather);
   } catch (error) {
+    if (error.message === 'Breaker is open') {
+      logger.error('Circuit breaker is open for getWeather, returning fallback response');
+      return res.status(503).json({ error: 'Weather service temporarily unavailable' });
+    }
     res.status(500).json({
       error: 'Error obtaining weather data',
       message: error.message,
