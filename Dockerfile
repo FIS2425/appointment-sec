@@ -2,10 +2,11 @@ FROM node:lts-alpine
 
 WORKDIR /appointment-svc
 
-COPY . .
+COPY package.json package-lock.json ./
 
 RUN npm ci --omit=dev && \
-rm -rf $(npm get cache)
+    rm -rf $(npm get cache)
+
+COPY . .
 
 ENTRYPOINT ["npm", "start"]
-# ENTRYPOINT ["npm", "run", "dev"]
