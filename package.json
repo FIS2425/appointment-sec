@@ -1,7 +1,7 @@
 {
   "name": "appointment",
   "version": "1.0.0",
-  "description": "Template repository for starting a microservice",
+  "description": "Appointment service",
   "engines": {
     "node": ">=22.0.0",
     "npm": ">=10.9.0",
@@ -54,7 +54,7 @@
     "express": "4.21.1",
     "ioredis": "5.4.1",
     "jsonwebtoken": "9.0.2",
-    "kafka-node": "5.0.0",
+    "kafkajs": "2.2.4",
     "mongoose": "8.8.2",
     "openapi-to-md": "1.0.24",
     "opossum": "8.3.1",
