@@ -17,25 +17,6 @@ tags:
     description: Endpoints related to patient appointment management
 
 paths:
-  /health:
-    get:
-      summary: Check service health
-      description: Endpoint to verify the health status of the appointment service.
-      responses:
-        '200':
-          description: Service is healthy
-          content:
-            application/json:
-              schema:
-                type: string
-                example: "API is healthy"
-        '500':
-          description: Service is unhealthy
-          content:
-            application/json:
-              schema:
-                type: string
-                example: "Error"
   /appointments:
     get:
       tags:
