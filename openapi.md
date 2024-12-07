@@ -22,7 +22,6 @@ Appointment management microservice for medical consultation application. Handle
 | PUT | [/appointments/{id}/complete](#putappointmentsidcomplete) | Complete an appointment |
 | PUT | [/appointments/{id}/noshow](#putappointmentsidnoshow) | Mark an appointment as no_show |
 | GET | [/appointments/{id}/weather](#getappointmentsidweather) | Get weather forecast for appointment |
-| GET | [/health](#gethealth) | Check service health |
 
 ## Reference Table
 
@@ -604,40 +603,6 @@ Retrieve weather forecast for the location and date of a specific appointment by
 - 404 Appointment or weather data not found
 
 - 500 Error retrieving the weather information
-
-***
-
-### [GET]/health
-
-- Summary  
-Check service health
-
-- Description  
-Endpoint to verify the health status of the appointment service.
-
-#### Responses
-
-- 200 Service is healthy
-
-`application/json`
-
-```ts
-{
-  "type": "string",
-  "example": "API is healthy"
-}
-```
-
-- 500 Service is unhealthy
-
-`application/json`
-
-```ts
-{
-  "type": "string",
-  "example": "Error"
-}
-```
 
 ## References
 
