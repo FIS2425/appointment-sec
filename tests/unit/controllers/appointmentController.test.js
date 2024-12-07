@@ -175,7 +175,6 @@ describe('Appointment Controller Unit', () => {
       vi.spyOn(Appointment, 'findByIdAndUpdate').mockResolvedValue(appointment);
       const response = await request.put(`/appointments/${appointment._id}/noshow`).set('Cookie', ['token=authToken&refreshToken=refreshToken']);
       expect(response.status).toBe(200);
-      console.log(response.body);
       expect(response.body.status).toBe('no_show');
     });
     it('should return 404 if appointment is not found', async () => {
