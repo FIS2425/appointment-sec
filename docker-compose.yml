@@ -1,8 +1,8 @@
 services:
-  dragonfly:
+  dragonfly-appointment:
     restart: unless-stopped
     image: ghcr.io/dragonflydb/dragonfly:latest
-    container_name: dragonfly
+    container_name: dragonfly-appointments
     ports:
       - "6379:6379"
     networks:
@@ -10,7 +10,7 @@ services:
     volumes:
       - dragonfly-data:/data/dragonfly
 
-  mongodb:
+  mongodb-appointment:
     restart: unless-stopped
     image: mongo:latest
     container_name: mongodb-appointments
