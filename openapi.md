@@ -20,8 +20,9 @@ Appointment management microservice for medical consultation application. Handle
 | PUT | [/appointments/{id}](#putappointmentsid) | Update an appointment |
 | PUT | [/appointments/{id}/cancel](#putappointmentsidcancel) | Cancel an appointment |
 | PUT | [/appointments/{id}/complete](#putappointmentsidcomplete) | Complete an appointment |
-| PUT | [/appointments/{id}/noshow](#putappointmentsidnoshow) | Mark an appointment as no-show |
+| PUT | [/appointments/{id}/noshow](#putappointmentsidnoshow) | Mark an appointment as no_show |
 | GET | [/appointments/{id}/weather](#getappointmentsidweather) | Get weather forecast for appointment |
+| GET | [/health](#gethealth) | Check service health |
 
 ## Reference Table
 
@@ -68,7 +69,7 @@ cookieAuth
   // Date and time of the appointment
   appointmentDate?: string
   // Current status of the appointment
-  status?: enum[pending, completed, cancelled, no-show]
+  status?: enum[pending, completed, cancelled, no_show]
   // Appointment creation timestamp
   createdAt?: string
 }[]
@@ -129,7 +130,7 @@ cookieAuth
   // Date and time of the appointment
   appointmentDate?: string
   // Current status of the appointment
-  status?: enum[pending, completed, cancelled, no-show]
+  status?: enum[pending, completed, cancelled, no_show]
   // Appointment creation timestamp
   createdAt?: string
 }
@@ -224,7 +225,7 @@ cookieAuth
   // Date and time of the appointment
   appointmentDate?: string
   // Current status of the appointment
-  status?: enum[pending, completed, cancelled, no-show]
+  status?: enum[pending, completed, cancelled, no_show]
   // Appointment creation timestamp
   createdAt?: string
 }[]
@@ -266,7 +267,7 @@ cookieAuth
   // Date and time of the appointment
   appointmentDate?: string
   // Current status of the appointment
-  status?: enum[pending, completed, cancelled, no-show]
+  status?: enum[pending, completed, cancelled, no_show]
   // Appointment creation timestamp
   createdAt?: string
 }[]
@@ -308,7 +309,7 @@ cookieAuth
   // Date and time of the appointment
   appointmentDate?: string
   // Current status of the appointment
-  status?: enum[pending, completed, cancelled, no-show]
+  status?: enum[pending, completed, cancelled, no_show]
   // Appointment creation timestamp
   createdAt?: string
 }[]
@@ -379,7 +380,7 @@ cookieAuth
   // Date and time of the appointment
   appointmentDate?: string
   // Current status of the appointment
-  status?: enum[pending, completed, cancelled, no-show]
+  status?: enum[pending, completed, cancelled, no_show]
   // Appointment creation timestamp
   createdAt?: string
 }
@@ -413,7 +414,7 @@ cookieAuth
   // Updated date and time of the appointment
   appointmentDate?: string
   // Updated status of the appointment
-  status?: enum[pending, completed, cancelled, no-show]
+  status?: enum[pending, completed, cancelled, no_show]
 }
 ```
 
@@ -438,7 +439,7 @@ cookieAuth
   // Date and time of the appointment
   appointmentDate?: string
   // Current status of the appointment
-  status?: enum[pending, completed, cancelled, no-show]
+  status?: enum[pending, completed, cancelled, no_show]
   // Appointment creation timestamp
   createdAt?: string
 }
@@ -482,7 +483,7 @@ cookieAuth
   // Date and time of the appointment
   appointmentDate?: string
   // Current status of the appointment
-  status?: enum[pending, completed, cancelled, no-show]
+  status?: enum[pending, completed, cancelled, no_show]
   // Appointment creation timestamp
   createdAt?: string
 }
@@ -528,7 +529,7 @@ cookieAuth
   // Date and time of the appointment
   appointmentDate?: string
   // Current status of the appointment
-  status?: enum[pending, completed, cancelled, no-show]
+  status?: enum[pending, completed, cancelled, no_show]
   // Appointment creation timestamp
   createdAt?: string
 }
@@ -545,17 +546,17 @@ cookieAuth
 ### [PUT]/appointments/{id}/noshow
 
 - Summary  
-Mark an appointment as no-show
+Mark an appointment as no_show
 
 - Description  
-Change the status of an appointment to "no-show" by its ID.
+Change the status of an appointment to "no_show" by its ID.
 
 - Security  
 cookieAuth  
 
 #### Responses
 
-- 200 Appointment marked as no-show successfully
+- 200 Appointment marked as no_show successfully
 
 `application/json`
 
@@ -574,7 +575,7 @@ cookieAuth
   // Date and time of the appointment
   appointmentDate?: string
   // Current status of the appointment
-  status?: enum[pending, completed, cancelled, no-show]
+  status?: enum[pending, completed, cancelled, no_show]
   // Appointment creation timestamp
   createdAt?: string
 }
@@ -584,7 +585,7 @@ cookieAuth
 
 - 404 Appointment not found
 
-- 500 Error marking appointment as no-show
+- 500 Error marking appointment as no_show
 
 ***
 
@@ -603,6 +604,40 @@ Retrieve weather forecast for the location and date of a specific appointment by
 - 404 Appointment or weather data not found
 
 - 500 Error retrieving the weather information
+
+***
+
+### [GET]/health
+
+- Summary  
+Check service health
+
+- Description  
+Endpoint to verify the health status of the appointment service.
+
+#### Responses
+
+- 200 Service is healthy
+
+`application/json`
+
+```ts
+{
+  "type": "string",
+  "example": "API is healthy"
+}
+```
+
+- 500 Service is unhealthy
+
+`application/json`
+
+```ts
+{
+  "type": "string",
+  "example": "Error"
+}
+```
 
 ## References
 
@@ -623,7 +658,7 @@ Retrieve weather forecast for the location and date of a specific appointment by
   // Date and time of the appointment
   appointmentDate?: string
   // Current status of the appointment
-  status?: enum[pending, completed, cancelled, no-show]
+  status?: enum[pending, completed, cancelled, no_show]
   // Appointment creation timestamp
   createdAt?: string
 }
@@ -655,7 +690,7 @@ Retrieve weather forecast for the location and date of a specific appointment by
   // Updated date and time of the appointment
   appointmentDate?: string
   // Updated status of the appointment
-  status?: enum[pending, completed, cancelled, no-show]
+  status?: enum[pending, completed, cancelled, no_show]
 }
 ```
 
