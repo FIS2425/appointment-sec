@@ -25,7 +25,7 @@ export default function () {
     res.send('API is running correctly');
   });
 
-  app.get(`${process.env.API_PREFIX || ''}/health`, (req, res) => {
+  app.get(`${process.env.API_PREFIX || ''}/healthz`, (req, res) => {
     res.status(200).send('API is healthy');
   });
 

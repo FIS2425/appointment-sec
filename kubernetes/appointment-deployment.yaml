@@ -90,6 +90,12 @@ spec:
                   key: DRAGONFLY_PORT
           image: ghcr.io/fis2425/appointment:latest
           name: appointment
+          livenessProbe:
+            httpGet:
+              path: /api/v1/healthz
+              port: 3012
+            initialDelaySeconds: 20
+            periodSeconds: 5
           ports:
             - containerPort: 3012
               protocol: TCP

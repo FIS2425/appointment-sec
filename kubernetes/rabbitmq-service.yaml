@@ -5,8 +5,8 @@ metadata:
     kompose.cmd: kompose convert -o kubernetes/
     kompose.version: 1.34.0 (HEAD)
   labels:
-    io.kompose.service: rabbitmq
-  name: rabbitmq
+    io.kompose.service: rabbitmq-appointment
+  name: rabbitmq-appointment
 spec:
   type: LoadBalancer
   ports:
@@ -15,4 +15,4 @@ spec:
       targetPort: 5672
       nodePort: 30013
   selector:
-    io.kompose.service: rabbitmq
+    io.kompose.service: rabbitmq-appointment
