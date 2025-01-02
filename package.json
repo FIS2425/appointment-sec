@@ -56,7 +56,7 @@
     "ioredis-mock": "8.9.0",
     "jsonwebtoken": "9.0.2",
     "kafkajs": "2.2.4",
-    "mongoose": "8.9.2",
+    "mongoose": "8.9.3",
     "openapi-to-md": "1.0.25",
     "opossum": "8.4.0",
     "rabbitmq-client": "5.0.2",
