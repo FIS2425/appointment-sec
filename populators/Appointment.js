@@ -42,7 +42,7 @@ const doctor4 = {
   specialty: 'pediatrics'
 }
 
-const patient1 = uuidv4();
+const patient1 = 'f8b8d3e7-4bb7-4d1b-99a4-e3a8f0452f63';
 
 const patient2 = uuidv4();
 

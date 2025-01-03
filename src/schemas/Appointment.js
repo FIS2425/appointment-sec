@@ -48,12 +48,6 @@ const AppointmentSchema = new mongoose.Schema({
   appointmentDate: {
     type: Date,
     required: true,
-    validate: {
-      validator: (date) => {
-        return date > new Date();
-      },
-      message: 'Appointment date must be in the future',
-    }
   },
   duration: {
     type: Number,
