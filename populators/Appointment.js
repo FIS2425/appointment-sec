@@ -28,13 +28,23 @@ const doctor1 = {
 }
 
 const doctor2 = {
-  id: uuidv4(),
-  specialty: 'dermatology',
+  id: '27163ac7-4f4d-4669-a0c1-4b8538405475',
+  name: 'Alvaro',
+  surname: 'Flores',
+  specialty: 'cardiology',
+  dni: '10000004H',
+  userId: '27163ac7-4f4d-4669-a0c1-4b8538405475',
+  clinicId: '27163ac7-4f4d-4669-a0c1-4b8538405475'
 }
 
 const doctor3 = {
-  id: uuidv4(),
-  specialty: 'gynecology'
+  id: 'a1ac971e-7188-4eaa-859c-7b2249e3c46b',
+  name: 'Adrian',
+  surname: 'Bernal',
+  specialty: 'neurology',
+  dni: '20060493P',
+  userId: '679f55e3-a3cd-4a47-aebd-13038c1528a0',
+  clinicId: '5b431574-d2ab-41d3-b1dd-84b06f2bd1a0'
 }
 
 const doctor4 = {
@@ -42,7 +52,7 @@ const doctor4 = {
   specialty: 'pediatrics'
 }
 
-const patient1 = uuidv4();
+const patient1 = 'f8b8d3e7-4bb7-4d1b-99a4-e3a8f0452f63';
 
 const patient2 = uuidv4();
 
@@ -50,9 +60,9 @@ const patient3 = uuidv4();
 
 const patient4 = uuidv4();
 
-const clinic1 = uuidv4();
+const clinic1 = '27163ac7-4f4d-4669-a0c1-4b8538405475';
 
-const clinic2 = uuidv4();
+const clinic2 = '5b431574-d2ab-41d3-b1dd-84b06f2bd1a0';
 
 const sampleAppointments = [
   {
@@ -67,7 +77,7 @@ const sampleAppointments = [
   },
   {
     patientId: patient2,
-    clinicId: clinic2,
+    clinicId: doctor2.clinicId,
     doctorId: doctor2.id, // dermatology doctor
     specialty: doctor2.specialty,
     type: 'consult',
@@ -77,7 +87,7 @@ const sampleAppointments = [
   },
   {
     patientId: patient3,
-    clinicId: clinic1,
+    clinicId: doctor3.clinicId,
     doctorId: doctor3.id, // gynecology doctor
     specialty: doctor3.specialty,
     type: 'follow_up',
@@ -87,7 +97,7 @@ const sampleAppointments = [
   },
   {
     patientId: patient4,
-    clinicId: clinic1,
+    clinicId: doctor2.clinicId,
     doctorId: doctor2.id, // dermatology doctor
     specialty: doctor2.specialty,
     type: 'consult',
@@ -97,7 +107,7 @@ const sampleAppointments = [
   },
   {
     patientId: patient1,
-    clinicId: clinic2,
+    clinicId: doctor3.clinicId,
     doctorId: doctor3.id, // gynecology doctor
     specialty: doctor3.specialty,
     type: 'revision',
@@ -147,7 +157,7 @@ const sampleAppointments = [
   },
   {
     patientId: patient2,
-    clinicId: clinic2,
+    clinicId: doctor3.clinicId,
     doctorId: doctor3.id, // gynecology doctor
     specialty: doctor3.specialty,
     type: 'follow_up',
@@ -167,7 +177,7 @@ const sampleAppointments = [
   },
   {
     patientId: patient4,
-    clinicId: clinic1,
+    clinicId: doctor2.id,
     doctorId: doctor2.id, // dermatology doctor
     specialty: doctor2.specialty,
     type: 'consult',

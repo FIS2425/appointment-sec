@@ -47,7 +47,8 @@ export const createAppointment = async (req, res) => {
     logger.error('Error creating appointment: Missing required fields', {
       method: req.method,
       url: req.originalUrl,
-      ip: req.headers && req.headers['x-forwarded-for'] || req.ip
+      ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
     });
     return res.status(400).json({ error: 'Missing required fields' });
   }
@@ -75,6 +76,7 @@ export const createAppointment = async (req, res) => {
       method: req.method,
       url: req.originalUrl,
       ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
       error: error
     });
 
@@ -98,7 +100,8 @@ export const createAppointment = async (req, res) => {
       method: req.method,
       url: req.originalUrl,
       appointmentId: newAppointment._id,
-      ip: req.headers && req.headers['x-forwarded-for'] || req.ip
+      ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
     });
     return res.status(201).json(newAppointment);
   } catch (error) {
@@ -106,6 +109,7 @@ export const createAppointment = async (req, res) => {
       method: req.method,
       url: req.originalUrl,
       ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
       error: error.message
     });
     return res.status(500).json({
@@ -121,7 +125,8 @@ export const getAppointments = async (req, res) => {
     logger.debug(`Returning ${appointments.length} appointments`, {
       method: req.method,
       url: req.originalUrl,
-      ip: req.headers && req.headers['x-forwarded-for'] || req.ip
+      ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
     });
     res.status(200).json(appointments);
   } catch (error) {
@@ -129,6 +134,7 @@ export const getAppointments = async (req, res) => {
       method: req.method,
       url: req.originalUrl,
       ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
       error: error.message
     });
     res
@@ -145,6 +151,7 @@ export const getAppointmentById = async (req, res) => {
         method: req.method,
         url: req.originalUrl,
         ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+        requestId: req.headers && req.headers['x-request-id'] || null,
         error: 'Appointment not found'
       });
       return res.status(404).json({ error: 'Appointment not found' });
@@ -152,7 +159,8 @@ export const getAppointmentById = async (req, res) => {
     logger.debug(`Returning appointment ${appointment._id}`, {
       method: req.method,
       url: req.originalUrl,
-      ip: req.headers && req.headers['x-forwarded-for'] || req.ip
+      ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
     });
     res.status(200).json(appointment);
   } catch (error) {
@@ -160,6 +168,7 @@ export const getAppointmentById = async (req, res) => {
       method: req.method,
       url: req.originalUrl,
       ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
       error: error.message
     });
     res
@@ -178,6 +187,7 @@ export const getAppointmentsByPatient = async (req, res) => {
         method: req.method,
         url: req.originalUrl,
         ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+        requestId: req.headers && req.headers['x-request-id'] || null,
         error: 'Appointments not found'
       });
       return res.status(404).json({ error: 'Appointments not found for patient ' + req.params.patientId });
@@ -185,7 +195,8 @@ export const getAppointmentsByPatient = async (req, res) => {
     logger.debug(`Returning ${appointments.length} appointments for patient ${req.params.patientId}`, {
       method: req.method,
       url: req.originalUrl,
-      ip: req.headers && req.headers['x-forwarded-for'] || req.ip
+      ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
     });
     res.status(200).json(appointments);
   } catch (error) {
@@ -193,6 +204,7 @@ export const getAppointmentsByPatient = async (req, res) => {
       method: req.method,
       url: req.originalUrl,
       ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
       error: error.message
     });
     res.status(500).json({
@@ -212,6 +224,7 @@ export const getAppointmentsByDoctor = async (req, res) => {
         method: req.method,
         url: req.originalUrl,
         ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+        requestId: req.headers && req.headers['x-request-id'] || null,
         error: 'Appointments not found'
       });
       return res.status(404).json({ error: 'Appointments not found for doctor ' + req.params.doctorId });
@@ -219,7 +232,8 @@ export const getAppointmentsByDoctor = async (req, res) => {
     logger.debug(`Returning ${appointments.length} appointments for doctor ${req.params.doctorId}`, {
       method: req.method,
       url: req.originalUrl,
-      ip: req.headers && req.headers['x-forwarded-for'] || req.ip
+      ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
     });
     res.status(200).json(appointments);
   } catch (error) {
@@ -227,6 +241,7 @@ export const getAppointmentsByDoctor = async (req, res) => {
       method: req.method,
       url: req.originalUrl,
       ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
       error: error.message
     });
     res.status(500).json({
@@ -246,6 +261,7 @@ export const getAppointmentsByClinic = async (req, res) => {
         method: req.method,
         url: req.originalUrl,
         ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+        requestId: req.headers && req.headers['x-request-id'] || null,
         error: 'Appointments not found'
       });
       return res.status(404).json({ error: 'Appointments not found for clinic ' + req.params.clinicId });
@@ -253,7 +269,8 @@ export const getAppointmentsByClinic = async (req, res) => {
     logger.debug(`Returning ${appointments.length} appointments for clinic ${req.params.clinicId}`, {
       method: req.method,
       url: req.originalUrl,
-      ip: req.headers && req.headers['x-forwarded-for'] || req.ip
+      ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
     });
     res.status(200).json(appointments);
   } catch (error) {
@@ -261,6 +278,7 @@ export const getAppointmentsByClinic = async (req, res) => {
       method: req.method,
       url: req.originalUrl,
       ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
       error: error.message
     });
     res.status(500).json({
@@ -277,7 +295,8 @@ export const updateAppointment = async (req, res) => {
       logger.error('Error updating appointment: Missing required fields', {
         method: req.method,
         url: req.originalUrl,
-        ip: req.headers && req.headers['x-forwarded-for'] || req.ip
+        ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+        requestId: req.headers && req.headers['x-request-id'] || null,
       });
       return res.status(400).json({ error: 'You need to provide at least one field to update' });
     }
@@ -293,6 +312,7 @@ export const updateAppointment = async (req, res) => {
         method: req.method,
         url: req.originalUrl,
         ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+        requestId: req.headers && req.headers['x-request-id'] || null,
         error: 'Appointment not found'
       });
       return res.status(404).json({ error: 'Appointment not found' });
@@ -301,7 +321,8 @@ export const updateAppointment = async (req, res) => {
       method: req.method,
       url: req.originalUrl,
       appointmentId: updatedAppointment._id,
-      ip: req.headers && req.headers['x-forwarded-for'] || req.ip
+      ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
     });
     res.status(200).json(updatedAppointment);
   } catch (error) {
@@ -309,6 +330,7 @@ export const updateAppointment = async (req, res) => {
       method: req.method,
       url: req.originalUrl,
       ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
       error: error.message
     });
     res
@@ -327,6 +349,7 @@ export const deleteAppointment = async (req, res) => {
         method: req.method,
         url: req.originalUrl,
         ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+        requestId: req.headers && req.headers['x-request-id'] || null,
         error: 'Appointment not found'
       });
       return res.status(404).json({ error: 'Appointment not found' });
@@ -335,7 +358,8 @@ export const deleteAppointment = async (req, res) => {
       method: req.method,
       url: req.originalUrl,
       appointmentId: req.params.id,
-      ip: req.headers && req.headers['x-forwarded-for'] || req.ip
+      ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
     });
     res.status(200).json({ message: 'Appointment correctly deleted' });
   } catch (error) {
@@ -343,6 +367,7 @@ export const deleteAppointment = async (req, res) => {
       method: req.method,
       url: req.originalUrl,
       ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
       error: error.message
     });
     res
@@ -357,7 +382,8 @@ export const cancelAppointment = async (req, res) => {
       logger.error('Error cancelling appointment: Missing required fields', {
         method: req.method,
         url: req.originalUrl,
-        ip: req.headers && req.headers['x-forwarded-for'] || req.ip
+        ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+        requestId: req.headers && req.headers['x-request-id'] || null,
       });
       return res.status(400).json({ error: 'You need to provide an appointment id' });
     }
@@ -372,6 +398,7 @@ export const cancelAppointment = async (req, res) => {
         method: req.method,
         url: req.originalUrl,
         ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+        requestId: req.headers && req.headers['x-request-id'] || null,
         error: 'Appointment not found'
       });
       return res.status(404).json({ error: 'Appointment not found' });
@@ -380,7 +407,8 @@ export const cancelAppointment = async (req, res) => {
       method: req.method,
       url: req.originalUrl,
       appointmentId: updatedAppointment._id,
-      ip: req.headers && req.headers['x-forwarded-for'] || req.ip
+      ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
     });
     res.status(200).json(updatedAppointment);
   } catch (error) {
@@ -388,6 +416,7 @@ export const cancelAppointment = async (req, res) => {
       method: req.method,
       url: req.originalUrl,
       ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
       error: error.message
     });
     res
@@ -402,7 +431,8 @@ export const completeAppointment = async (req, res) => {
       logger.error('Error completing appointment: Missing required fields', {
         method: req.method,
         url: req.originalUrl,
-        ip: req.headers && req.headers['x-forwarded-for'] || req.ip
+        ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+        requestId: req.headers && req.headers['x-request-id'] || null,
       });
       return res.status(400).json({ error: 'You need to provide an appointment id' });
     }
@@ -417,6 +447,7 @@ export const completeAppointment = async (req, res) => {
         method: req.method,
         url: req.originalUrl,
         ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+        requestId: req.headers && req.headers['x-request-id'] || null,
         error: 'Appointment not found'
       });
       return res.status(404).json({ error: 'Appointment not found' });
@@ -425,7 +456,8 @@ export const completeAppointment = async (req, res) => {
       method: req.method,
       url: req.originalUrl,
       appointmentId: updatedAppointment._id,
-      ip: req.headers && req.headers['x-forwarded-for'] || req.ip
+      ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
     });
     res.status(200).json(updatedAppointment);
   } catch (error) {
@@ -433,6 +465,7 @@ export const completeAppointment = async (req, res) => {
       method: req.method,
       url: req.originalUrl,
       ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
       error: error.message
     });
     res
@@ -447,7 +480,8 @@ export const noShowAppointment = async (req, res) => {
       logger.error('Error marking no show: Missing required fields', {
         method: req.method,
         url: req.originalUrl,
-        ip: req.headers && req.headers['x-forwarded-for'] || req.ip
+        ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+        requestId: req.headers && req.headers['x-request-id'] || null,
       });
       return res.status(400).json({ error: 'You need to provide an appointment id' });
     }
@@ -462,6 +496,7 @@ export const noShowAppointment = async (req, res) => {
         method: req.method,
         url: req.originalUrl,
         ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+        requestId: req.headers && req.headers['x-request-id'] || null,
         error: 'Appointment not found'
       });
       return res.status(404).json({ error: 'Appointment not found' });
@@ -470,7 +505,8 @@ export const noShowAppointment = async (req, res) => {
       method: req.method,
       url: req.originalUrl,
       appointmentId: updatedAppointment._id,
-      ip: req.headers && req.headers['x-forwarded-for'] || req.ip
+      ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
     });
     res.status(200).json(updatedAppointment);
   } catch (error) {
@@ -478,6 +514,7 @@ export const noShowAppointment = async (req, res) => {
       method: req.method,
       url: req.originalUrl,
       ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
       error: error.message
     });
     res
@@ -494,7 +531,8 @@ export const getAvailableAppointments = async (req, res) => {
       logger.error('Error obtaining available appointments: Invalid or missing required fields', { 
         method: req.method,
         url: req.originalUrl,
-        ip: req.headers && req.headers['x-forwarded-for'] || req.ip 
+        ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+        requestId: req.headers && req.headers['x-request-id'] || null, 
       });
       return res.status(400).json({ error: 'You need to provide valid clinicId, doctorId, and date' });
     }
@@ -504,7 +542,8 @@ export const getAvailableAppointments = async (req, res) => {
     logger.debug(`Returning ${availableAppointments.length} available appointments`, {
       method: req.method,
       url: req.originalUrl,
-      ip: req.headers && req.headers['x-forwarded-for'] || req.ip
+      ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
     });
     res.status(200).json(availableAppointments);
   } catch (error) {
@@ -512,6 +551,7 @@ export const getAvailableAppointments = async (req, res) => {
       method: req.method,
       url: req.originalUrl,
       ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
+      requestId: req.headers && req.headers['x-request-id'] || null,
       error: error.message
     });
     res.status(500).json({

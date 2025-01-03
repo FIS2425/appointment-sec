@@ -1,8 +1,8 @@
 services:
-  dragonfly:
+  dragonfly-appointment:
     restart: unless-stopped
     image: ghcr.io/dragonflydb/dragonfly:latest
-    container_name: dragonfly
+    container_name: dragonfly-appointments
     ports:
       - "6379:6379"
     networks:
@@ -10,7 +10,7 @@ services:
     volumes:
       - dragonfly-data:/data/dragonfly
 
-  mongodb:
+  mongodb-appointment:
     restart: unless-stopped
     image: mongo:latest
     container_name: mongodb-appointments
@@ -47,15 +47,15 @@ services:
       - DRAGONFLY_HOST=${DRAGONFLY_HOST}
       - DRAGONFLY_PORT=${DRAGONFLY_PORT}
     depends_on:
-      - mongodb
+      - mongodb-appointment
     networks:
       - backend-appointments
     ports:
       - "3012:3012"
 
-  rabbitmq:
+  rabbitmq-appointment:
     image: rabbitmq:management-alpine
-    container_name: rabbitmq
+    container_name: rabbitmq-appointment
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBIT_USERNAME}
       - RABBITMQ_DEFAULT_PASS=${RABBIT_PASSWORD}
