@@ -49,7 +49,7 @@ describe('VERIFY AUTHORIZATION Middleware', () => {
     expect(res.body.error).toBe('Invalid token');
   });
 
-  it('should return 401 with insufficient permissions', async () => {
+  it('should return 403 with insufficient permissions', async () => {
     const res = await request
       .get('/appointments')
       .set('Cookie', `token=${token1}`);

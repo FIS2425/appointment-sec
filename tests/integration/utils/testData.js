@@ -132,7 +132,7 @@ const sampleUser2 = {
   _id: uuidv4(),
   email: 'testuser2@mail.com',
   password: 'pAssw0rd!',
-  roles: ['doctor'],
+  roles: ['admin'],
 };
 
 export {
