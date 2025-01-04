@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import { v4 as uuidv4 } from 'uuid';
 import Appointment from '../src/schemas/Appointment.js'; // Adjust path if needed
 
 const MONGO_URI = process.env.MONGOURL;
@@ -23,8 +22,13 @@ const inThreeDays = new Date(today.setDate(today.getDate() + 3));
 const inFourDays = new Date(today.setDate(today.getDate() + 4));
 
 const doctor1 = {
-  id: uuidv4(),
+  id: 'fea82b90-c146-4ea6-91b3-85a73c82e259',
+  name: 'Doctor',
+  surname: 'First',
   specialty: 'family_medicine',
+  dni: '64781738F',
+  userId: 'af1520a8-2d04-441e-ba19-aef5faf45dc8',
+  clinicId: '27163ac7-4f4d-4669-a0c1-4b8538405475'
 }
 
 const doctor2 = {
@@ -45,11 +49,6 @@ const doctor3 = {
   dni: '20060493P',
   userId: '679f55e3-a3cd-4a47-aebd-13038c1528a0',
   clinicId: '5b431574-d2ab-41d3-b1dd-84b06f2bd1a0'
-}
-
-const doctor4 = {
-  id: uuidv4(),
-  specialty: 'pediatrics'
 }
 
 const patient1 = 'f8b8d3e7-4bb7-4d1b-99a4-e3a8f0452f63';
@@ -118,8 +117,8 @@ const sampleAppointments = [
   {
     patientId: patient2,
     clinicId: clinic2,
-    doctorId: doctor4.id, // pediatrics doctor
-    specialty: doctor4.specialty,
+    doctorId: doctor3.id, // pediatrics doctor
+    specialty: doctor3.specialty,
     type: 'consult',
     appointmentDate: new Date(tomorrow.setHours(12, 15, 0, 0)), // tomorrow at 12:15
     duration: 30,
@@ -138,8 +137,8 @@ const sampleAppointments = [
   {
     patientId: patient4,
     clinicId: clinic1,
-    doctorId: doctor4.id, // pediatrics doctor
-    specialty: doctor4.specialty,
+    doctorId: doctor3.id, // pediatrics doctor
+    specialty: doctor3.specialty,
     type: 'revision',
     appointmentDate: new Date(inTwoDays.setHours(10, 30, 0, 0)), // in two days at 10:30
     duration: 30,
@@ -157,8 +156,8 @@ const sampleAppointments = [
   },
   {
     patientId: patient2,
-    clinicId: doctor3.clinicId,
-    doctorId: doctor3.id, // gynecology doctor
+    clinicId: doctor1.clinicId,
+    doctorId: doctor1.id, // gynecology doctor
     specialty: doctor3.specialty,
     type: 'follow_up',
     appointmentDate: new Date(inThreeDays.setHours(13, 30, 0, 0)), // in three days at 13:30
@@ -188,8 +187,8 @@ const sampleAppointments = [
   {
     patientId: patient1,
     clinicId: clinic2,
-    doctorId: doctor4.id, // pediatrics doctor
-    specialty: doctor4.specialty,
+    doctorId: doctor2.id, // pediatrics doctor
+    specialty: doctor2.specialty,
     type: 'revision',
     appointmentDate: new Date(inFourDays.setHours(16, 45, 0, 0)), // in four days at 16:45
     duration: 45,
