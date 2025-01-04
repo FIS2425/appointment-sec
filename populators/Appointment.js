@@ -28,7 +28,7 @@ const doctor1 = {
 }
 
 const doctor2 = {
-  id: '27163ac7-4f4d-4669-a0c1-4b8538405475',
+  id: '6a86e820-e108-4a71-8f10-57c3e0ccd0ac',
   name: 'Alvaro',
   surname: 'Flores',
   specialty: 'cardiology',
@@ -54,11 +54,11 @@ const doctor4 = {
 
 const patient1 = 'f8b8d3e7-4bb7-4d1b-99a4-e3a8f0452f63';
 
-const patient2 = uuidv4();
+const patient2 = 'b1a7f9e3-6c5d-49d2-8f4a-3b7e9f5a6c71';
 
-const patient3 = uuidv4();
+const patient3 = 'd4f8b1a9-3e7c-45d2-9c6a-2b9f7e4a8c53';
 
-const patient4 = uuidv4();
+const patient4 = 'a2c7f9d1-5b3a-42d8-8e5f-7c4b9f1e8a92';
 
 const clinic1 = '27163ac7-4f4d-4669-a0c1-4b8538405475';
 
