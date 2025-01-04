@@ -18,9 +18,9 @@ describe('Authorization middleware', () => {
     expect(res.status).toBe(400);
     expect(res.body.error).toBe('Invalid token');
   });
-  it('should return 401 with insufficient permissions', async () => {
+  it('should return 403 with insufficient permissions', async () => {
     const token = jwt.sign(
-      { userId: '123', roles: ['doctor'] },
+      { userId: '123', roles: ['admin'] },
       process.env.VITE_JWT_SECRET
     );
     const res = await request.get('/appointments').set('Cookie', `token=${token}`);
