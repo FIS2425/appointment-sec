@@ -46,6 +46,8 @@ services:
       - KAFKA_HOST=${KAFKA_HOST}
       - DRAGONFLY_HOST=${DRAGONFLY_HOST}
       - DRAGONFLY_PORT=${DRAGONFLY_PORT}
+      - PAYMENT_SVC=${PAYMENT_SVC}
+      - OPEN_WEATHER_API_KEY=${OPEN_WEATHER_API_KEY}
     depends_on:
       - mongodb-appointment
     networks:

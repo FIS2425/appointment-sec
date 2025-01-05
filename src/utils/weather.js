@@ -23,10 +23,9 @@ export async function getLatituteLongitude(zipCode, countryCode) {
   }
 }
 
-export async function getWeather(zipCode, countryCode, date, lang = 'es') {
+export async function getWeather(zipCode, countryCode, date, lang = 'en') {
   try {
     const { latitude, longitude } = await getLatituteLongitude(zipCode, countryCode);
-
     const url = `http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric&lang=${lang}`;
     const parsedDate = getNearest3HourInterval(date);
 
