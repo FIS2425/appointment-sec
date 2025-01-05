@@ -12,6 +12,7 @@ import {
   getAvailableAppointmentsByWorkshift,
 } from '../utils/workshiftQueries.js';
 import { getWeather } from '../utils/weather.js';
+import { getClinicData } from '../utils/clinic.js';
 import logger from '../config/logger.js';
 import CircuitBreaker from 'opossum';
 
@@ -528,11 +529,11 @@ export const getAvailableAppointments = async (req, res) => {
     const { clinicId, doctorId, date } = req.query;
 
     if (!validateField(clinicId, 'uuid') || !validateField(doctorId, 'uuid') || !validateField(date, 'date')) {
-      logger.error('Error obtaining available appointments: Invalid or missing required fields', { 
+      logger.error('Error obtaining available appointments: Invalid or missing required fields', {
         method: req.method,
         url: req.originalUrl,
         ip: req.headers && req.headers['x-forwarded-for'] || req.ip,
-        requestId: req.headers && req.headers['x-request-id'] || null, 
+        requestId: req.headers && req.headers['x-request-id'] || null,
       });
       return res.status(400).json({ error: 'You need to provide valid clinicId, doctorId, and date' });
     }
@@ -568,11 +569,17 @@ export const getAppointmentWeather = async (req, res) => {
       logger.error(`Appointment ${req.params.id} not found`);
       return res.status(404).json({ error: 'Appointment not found' });
     }
-    // todo: get clinic location and cache it, now im mocking it
-    const clinicZipCode = '41012';
-    const clinicCountryCode = 'ES';
+
+    const clinicData = await getClinicData(appointment.clinicId, req.headers.cookie);
+    const clinicZipCode = clinicData.postalCode;
+    const clinicCountryCode = clinicData.countryCode;
 
     const weather = await weatherBreaker.fire(clinicZipCode, clinicCountryCode, appointment.appointmentDate);
+
+    if (!weather) {
+      logger.error('Error obtaining weather data');
+      return res.status(400).json({ error: 'Weather forecast is for 5 days ahead only' });
+    }
 
     return res.status(200).json(weather);
   } catch (error) {
