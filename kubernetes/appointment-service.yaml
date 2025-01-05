@@ -8,11 +8,10 @@ metadata:
     io.kompose.service: appointment
   name: appointment
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - protocol: TCP 
       port: 3012
       targetPort: 3012
-      nodePort: 30012
   selector:
     io.kompose.service: appointment
