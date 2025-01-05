@@ -88,6 +88,16 @@ spec:
                 secretKeyRef:
                   name: appointment-secrets
                   key: DRAGONFLY_PORT
+            - name: PAYMENT_SVC
+              valueFrom:
+                secretKeyRef:
+                  name: appointment-secrets
+                  key: PAYMENT_SVC
+            - name: OPEN_WEATHER_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: appointment-secrets
+                  key: OPEN_WEATHER_API_KEY
           image: ghcr.io/fis2425/appointment:latest
           name: appointment
           livenessProbe:
