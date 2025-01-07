@@ -62,7 +62,7 @@ const patient4 = 'a2c7f9d1-5b3a-42d8-8e5f-7c4b9f1e8a92';
 const sampleAppointments = [
   {
     patientId: patient1,
-    clinicId: clinic1,
+    clinicId: doctor1.clinicId,
     doctorId: doctor1.id, // family medicine doctor
     specialty: doctor1.specialty,
     type: 'consult',
