@@ -142,7 +142,7 @@ const sampleAppointments = [
   },
   {
     patientId: patient1,
-    clinicId: docto2.clinicId,
+    clinicId: doctor2.clinicId,
     doctorId: doctor2.id, // dermatology doctor
     specialty: doctor2.specialty,
     type: 'consult',
