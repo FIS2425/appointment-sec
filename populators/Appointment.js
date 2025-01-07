@@ -59,10 +59,6 @@ const patient3 = 'd4f8b1a9-3e7c-45d2-9c6a-2b9f7e4a8c53';
 
 const patient4 = 'a2c7f9d1-5b3a-42d8-8e5f-7c4b9f1e8a92';
 
-const clinic1 = '27163ac7-4f4d-4669-a0c1-4b8538405475';
-
-const clinic2 = '5b431574-d2ab-41d3-b1dd-84b06f2bd1a0';
-
 const sampleAppointments = [
   {
     patientId: patient1,
@@ -116,7 +112,7 @@ const sampleAppointments = [
   },
   {
     patientId: patient2,
-    clinicId: clinic2,
+    clinicId: doctor3.clinicId,
     doctorId: doctor3.id, // pediatrics doctor
     specialty: doctor3.specialty,
     type: 'consult',
@@ -126,7 +122,7 @@ const sampleAppointments = [
   },
   {
     patientId: patient3,
-    clinicId: clinic1,
+    clinicId: doctor1.clinicId,
     doctorId: doctor1.id, // family medicine doctor
     specialty: doctor1.specialty,
     type: 'follow_up',
@@ -136,7 +132,7 @@ const sampleAppointments = [
   },
   {
     patientId: patient4,
-    clinicId: clinic1,
+    clinicId: doctor3.clinicId,
     doctorId: doctor3.id, // pediatrics doctor
     specialty: doctor3.specialty,
     type: 'revision',
@@ -146,7 +142,7 @@ const sampleAppointments = [
   },
   {
     patientId: patient1,
-    clinicId: clinic2,
+    clinicId: docto2.clinicId,
     doctorId: doctor2.id, // dermatology doctor
     specialty: doctor2.specialty,
     type: 'consult',
@@ -157,8 +153,8 @@ const sampleAppointments = [
   {
     patientId: patient2,
     clinicId: doctor1.clinicId,
-    doctorId: doctor1.id, // gynecology doctor
-    specialty: doctor3.specialty,
+    doctorId: doctor1.id,
+    specialty: doctor1.specialty,
     type: 'follow_up',
     appointmentDate: new Date(inThreeDays.setHours(13, 30, 0, 0)), // in three days at 13:30
     duration: 30,
@@ -166,8 +162,8 @@ const sampleAppointments = [
   },
   {
     patientId: patient3,
-    clinicId: clinic1,
-    doctorId: doctor1.id, // family medicine doctor
+    clinicId: doctor1.clinicId,
+    doctorId: doctor1.id,
     specialty: doctor1.specialty,
     type: 'revision',
     appointmentDate: new Date(inThreeDays.setHours(15, 0, 0, 0)), // in three days at 15:00
@@ -176,7 +172,7 @@ const sampleAppointments = [
   },
   {
     patientId: patient4,
-    clinicId: doctor2.id,
+    clinicId: doctor2.clinicId,
     doctorId: doctor2.id, // dermatology doctor
     specialty: doctor2.specialty,
     type: 'consult',
@@ -186,7 +182,7 @@ const sampleAppointments = [
   },
   {
     patientId: patient1,
-    clinicId: clinic2,
+    clinicId: doctor2.clinicId,
     doctorId: doctor2.id, // pediatrics doctor
     specialty: doctor2.specialty,
     type: 'revision',
