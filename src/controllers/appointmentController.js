@@ -538,7 +538,7 @@ export const getAvailableAppointments = async (req, res) => {
       return res.status(400).json({ error: 'You need to provide valid clinicId, doctorId, and date' });
     }
     const appointments = await getAppointmentsWorkshiftByDoctorAndDate(clinicId, doctorId, date);
-    const intervals = await getFreeTimeIntervals(appointments);
+    const intervals = await getFreeTimeIntervals(appointments, date, doctorId, clinicId);
     const availableAppointments = await getAvailableAppointmentsByWorkshift(intervals, 30); // 30 minutes duration by default
     logger.debug(`Returning ${availableAppointments.length} available appointments`, {
       method: req.method,

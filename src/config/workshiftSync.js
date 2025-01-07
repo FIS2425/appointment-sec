@@ -2,21 +2,22 @@ import Workshift from '../schemas/Workshift.js';
 
 export async function processWorkshiftMessage(msg) {
   const obj = JSON.parse(msg.content.toString());
-  switch (obj.event) {
+  console.log(`[RabbitMQ] Received message with length: ${obj.length} and event: ${msg.fields.routingKey}`);
+  switch (msg.fields.routingKey) {
   case 'workshift-sync':
-    await syncWorkshifts(obj.workshifts);
+    await syncWorkshifts(obj);
     break;
   case 'workshift-created':
-    await createWorkshiftView(obj.workshift);
+    await createWorkshiftView(obj);
     break;
   case 'workshift-updated':
-    await updateWorkshiftView(obj.workshift);
-    break;
+    await updateWorkshiftView(obj);
+    break;  
   case 'workshift-deleted':
-    await deleteWorkshiftView(obj.workshift);
+    await deleteWorkshiftView(obj);
     break;
   case 'workshifts-many':
-    await createManyWorkshifts(obj.workshifts);
+    await createManyWorkshifts(obj);
     break;
   default:
     console.error('Unknown event type:', obj.event);
@@ -24,6 +25,11 @@ export async function processWorkshiftMessage(msg) {
 }
 
 export async function createWorkshiftView(workshiftData) {
+  const existingWorkshift = await Workshift.findById(workshiftData._id);
+  if (existingWorkshift) {
+    console.log('Workshift already exists, not saving');
+    return;
+  }
   const workshift = new Workshift(workshiftData);
   await workshift.save();
 }
@@ -44,4 +50,5 @@ export async function createManyWorkshifts(workshifts) {
 export async function syncWorkshifts(workshifts) {
   await Workshift.deleteMany({});
   await Workshift.insertMany(workshifts);
+  console.log('[RabbitMQ] Workshifts synchronized');
 }

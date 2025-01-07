@@ -10,7 +10,6 @@ async function connectRabbitMQ() {
       channel = await connection.createChannel();
       console.log('[RabbitMQ] Connected and channel created');
 
-
       // Close connection when the Node.js process ends
       process.on('exit', () => {
         connection.close();
@@ -35,14 +34,11 @@ async function connectRabbitMQ() {
   return channel;
 }
 
-
 async function startConsumer() {
   try {
     const channel = await connectRabbitMQ();
     const exchangeName = 'workshiftExchange';
     const queueName = 'appointmentQueue';
-    await channel.assertExchange(exchangeName, 'fanout', { durable: false });
-    await channel.assertQueue(queueName, { durable: false });
 
     // Bind the queue to the exchange
     await channel.bindQueue(queueName, exchangeName, '');
@@ -59,5 +55,4 @@ async function startConsumer() {
   }
 }
 
-
-export {startConsumer};
+export { startConsumer };
